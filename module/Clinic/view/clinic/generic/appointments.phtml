@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Appointments</div>
+    <div class="panel-body">
+        <p>...</p>
+    </div>
+
+    <table>
+    <!-- Headers -->
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Practitioner</th>
+            <th>Doctor</th>
+            <th>Visited</th>
+            <th>Confirmed</th>
+            <th> <!-- Delete--> </th>
+        </tr>
+    <?php foreach($this->appointments as $appointment): ?>
+    <!-- Data -->
+        <?php
+        $id = $appointment->getId();
+        $date = $appointment->getDate()->format('<b>d/m/Y</b> h:i');
+        $patientName = $appointment->getPatient()->getName();
+        $patientSurname = $appointment->getPatient()->getSurname();
+        $practitionerName = $appointment->getPractitioner()->getName();
+        $practitionerSurname = $appointment->getPractitioner()->getSurname();
+        $doctorName = $appointment->getDoctor()->getName();
+        $doctorSurname = $appointment->getDoctor()->getSurname();
+
+        ?>
+        <tr>
+            <td> <?= $id ?> </td>
+            <td> <?= $date ?> </td>
+            <td> <?= $appointment->getPatient()->getName()
+                . " " . $appointment->getPatient()->getSurname() ?>
+            </td>
+            <td> <?= $appointment->getPractitioner()->getName()
+                . " " . $appointment->getPractitioner()->getSurname() ?>
+            </td>
+            <td> <?= $appointment->getDoctor()->getName()
+                . " " . $appointment->getDoctor()->getSurname() ?> </td>
+            <td> <?= ($appointment->getMissed())? 'Yes':'No' ?> </td>
+            <td> <?= ($appointment->getConfirmed())? 'Yes':'No' ?></td>
+            <td>
+            <?php
+            $url = $this->url('adminAppointments', [
+                'action' => 'delete', 'id' => $appointment->getId()
+            ]);
+            ?>
+                <a href="<?= $url ?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </table>
+</div>

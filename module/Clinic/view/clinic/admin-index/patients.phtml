@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-user"></span> Patients
+        </h3>
+    </div>
+    <table class="table table-condensed table-striped table-hover">
+
+    <!-- Headers -->
+    <thead>
+        <tr>
+            <th>#</th>
+            <th><span class="glyphicon glyphicon-pencil"></span> Joined</th>
+            <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
+            <th><span class="glyphicon glyphicon-info-sign"></span> Name</th>
+            <th><span class="glyphicon glyphicon-calendar"></span> Appointments</th>
+            <th><span class="glyphicon glyphicon-envelope"></span> Email</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+
+<?php foreach($this->patients as $patient): ?>
+<!-- Data -->
+    <tr>
+        <td> <?= $patient->getId() ?> </td>
+        <td> <?= $patient->getJoined()->format('d M Y') ?></td>
+        <td> <?= $patient->getSurname() ?> </td>
+        <td> <?= $patient->getName() ?> </td>
+        <td>
+            <a href="
+                <?= $this->url('adminPatient', array(
+                        'action' => 'appointments',
+                        'id' => $patient->getId()
+                    ));
+                ?>">View Appointments
+            </a>
+        </td>
+        <td> <a href="mailto:<?= $patient->getEmail() ?> ">Send Email</a> </td>
+        <td>
+            <a href="#"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
+        </td>
+        <td>
+            <a href="#"><span class="glyphicon glyphicon-remove"></span>  Delete</a>
+        </td>
+    </tr>
+
+<?php endforeach; ?>
+
+</table>
+<div class="panel-footer" align="center">No more patients</div>
+</div>

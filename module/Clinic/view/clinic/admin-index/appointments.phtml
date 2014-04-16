@@ -1,0 +1,65 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-calendar"></span> Appointments
+        </h3>
+    </div>
+    <table class="table table-condensed table-striped table-hover">
+    <!-- Headers -->
+        <thead>
+            <tr>
+                <th>#</th>
+                <th><span class="glyphicon glyphicon-calendar"></span> Date</th>
+                <th><span class="glyphicon glyphicon-time"></span> Time</th>
+                <th><span class="glyphicon glyphicon-user"></span> Patient</th>
+                <th><span class="glyphicon glyphicon-user"></span> Practitioner</th>
+                <th><span class="glyphicon glyphicon-user"></span> Doctor</th>
+                <th><span class="glyphicon glyphicon-question-sign"></span> Visited</th>
+                <th><span class="glyphicon glyphicon-question-sign"></span> Confirmed</th>
+                <th><!-- Edit --></th>
+                <th><!-- Delete--></th>
+            </tr>
+        </thead>
+    <?php foreach($this->appointments as $appointment): ?>
+    <!-- Data -->
+        <?php
+            $id = $appointment->getId();
+            $dateObj = $appointment->getDate();
+            $date = $dateObj->format('d M Y');
+            $time = $dateObj->format('H:i');
+            $patient = $appointment->getPatient();
+            $practitioner = $appointment->getPractitioner();
+            $doctor = $appointment->getDoctor();
+            $yesIcon = '<span class="glyphicon glyphicon-ok"></span>';
+            $noIcon = '<span class="glyphicon glyphicon-remove"></span>';
+            $missed = ($appointment->getMissed())? $yesIcon : $noIcon;
+            $confirmed = ($appointment->getConfirmed())? $yesIcon : $noIcon;
+            $editUrl = $this->url('adminIndex', ['action' => 'edit', 'id' => $id]);
+            $deleteUrl = $this->url('adminIndex', ['action' => 'delete', 'id' => $id]);
+        ?>
+        <tr>
+            <td> <?=$id?> </td>
+            <td> <strong> <?=$date?> </strong> </td>
+            <td> <?=$time?> </td>
+            <?php
+            $patientUrl = $this->url('adminPatient', ['action' => 'index', 'id' => $id]);
+            echo "<td><a href='{$patientUrl}'>{$patient->getSurname()} {$patient->getName()}</a></td>";
+            $practitionerUrl = $this->url('adminPractitioner', ['action' => 'index', 'id' => $id]);
+            echo "<td><a href='$practitionerUrl'>{$practitioner->getSurname()} {$practitioner->getName()}</a></td>";
+            $doctorUrl = $this->url('adminDoctor', ['action' => 'index', 'id' => $id]);
+            echo "<td><a href='$doctorUrl'>{$doctor->getSurname()} {$doctor->getName()}</a></td>";
+            ?>
+            <td> <?=$missed?> </td>
+            <td> <?=$confirmed?> </td>
+            <td>
+                <a href="<?=$editUrl?>"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
+            </td>
+            <td>
+                <a href="<?=$deleteUrl?>"><span class="glyphicon glyphicon-remove"></span>  Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </table>
+    <div class="panel-footer" align="center">No more appointments</div>
+</div>
