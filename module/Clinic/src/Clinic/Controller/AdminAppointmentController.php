@@ -10,22 +10,18 @@ class AdminAppointmentController extends AbstractAdminController
 {
     public function indexAction()
     {
-
     }
 
     public function addAction()
     {
-
     }
 
     public function editAction()
     {
-
     }
 
     public function getAction()
     {
-
     }
 
     public function deleteAction()
@@ -38,7 +34,7 @@ class AdminAppointmentController extends AbstractAdminController
             try {
                 $em = $this->getEntityManager();
                 $appointment = $this->getRepository('Appointment');
-                $appointment->findBy(['id'=>$id]);
+                $appointment = $appointment->find(['id'=>$id]);
                 $em->remove($appointment);
                 $em->flush();
                 // success
