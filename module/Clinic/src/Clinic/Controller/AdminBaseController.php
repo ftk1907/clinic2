@@ -72,18 +72,19 @@ class AdminBaseController extends AbstractAdminController
         $entity = $this->_repository->find(['id' => $id]);
         $referer = $this->getRequest()->getHeader('referer')->getUri();
 
-        if(!is_null($entity)) {
-            try {
-                $this->_entityManager->remove($entity);
-                $this->_entityManager->flush();
-                return $this->getMessagePage(
-                    'success', "{$this->_entityName} with id {$id} was deleted!", $referer
-                );
-            } catch (Exception $e) {
-                break; // continue
-            }
+        if(!is_array($entity)) {
+            return $this->getMessagePage('error', 'Id not found', $referer);
         }
-        return $this->getMessagePage('error', '{$this->_entityName} was not to deleted!', $referer);
+
+        try {
+            $this->_entityManager->remove($entity);
+            $this->_entityManager->flush();
+            return $this->getMessagePage(
+                'success', "{$this->_entityName} with id {$id} was deleted!", $referer
+            );
+        } catch (Exception $e) {
+            return $this->getMessagePage('error', '{$this->_entityName} was not to deleted!', $referer);
+        }
     }
 
     /**
@@ -98,16 +99,16 @@ class AdminBaseController extends AbstractAdminController
         $entity = $this->_repository->find(['id' => $id]);
 
         // $entity exist, isn't an array, or requested entity isn't appointment
-        if(!is_null($entity) && !is_array($entity) && !($this->_entityName == 'appointment')) {
+        if(!is_null($entity) && !($this->_entityName == 'appointment')) {
             $appointments = $entity->getAppointments();
             $view = new ViewModel(['appointments' => $appointments]);
             $view->setTemplate('clinic/generic/appointment/all');
             return $view;
-        } else { // otherwise redirect to all appointments
-            $this->redirect()->toRoute('admin', [
-                'controller' => 'appointment',
-                'action'     => 'index',
-            ]);
         }
+        // otherwise redirect to all appointments
+        $this->redirect()->toRoute('admin', [
+            'controller' => 'appointment',
+            'action'     => 'index',
+        ]);
     }
 }
