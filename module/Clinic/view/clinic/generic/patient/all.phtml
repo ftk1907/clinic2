@@ -2,7 +2,7 @@
     <!-- Default panel contents -->
     <div class="panel-heading">
         <h3 class="panel-title">
-            <span class="glyphicon glyphicon-user"></span> Doctors
+            <span class="glyphicon glyphicon-user"></span> Patients
         </h3>
     </div>
     <table class="table table-condensed table-striped table-hover">
@@ -15,33 +15,30 @@
             <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
             <th><span class="glyphicon glyphicon-info-sign"></span> Name</th>
             <th><span class="glyphicon glyphicon-calendar"></span> Appointments</th>
-            <th><span class="glyphicon glyphicon-user"></span> Practitioners</th>
-            <th><span class="glyphicon glyphicon-plus"></span> Practitioner</th>
             <th><span class="glyphicon glyphicon-envelope"></span> Email</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
 
-<?php foreach($this->doctors as $doctor): ?>
+<?php foreach($this->patients as $patient): ?>
 <!-- Data -->
     <tr>
-        <td> <?= $doctor->getId() ?> </td>
-        <td> <?= $doctor->getJoined()->format('d M Y') ?></td>
-        <td> <?= $doctor->getSurname() ?> </td>
-        <td> <?= $doctor->getName() ?> </td>
+        <td> <?= $patient->getId() ?> </td>
+        <td> <?= $patient->getJoined()->format('d M Y') ?></td>
+        <td> <?= $patient->getSurname() ?> </td>
+        <td> <?= $patient->getName() ?> </td>
         <td>
             <a href="
-                <?= $this->url('adminDoctor', array(
-                        'action' => 'appointments',
-                        'id' => $doctor->getId()
+                <?= $this->url('admin', array(
+                        'controller' => 'patient',
+                        'action'     => 'appointments',
+                        'id'         => $patient->getId()
                     ));
                 ?>">View Appointments
             </a>
         </td>
-        <td><a href="">View Practitioners</a></td>
-        <td><a href="">Add Practitioner</a></td>
-        <td> <a href="mailto:<?= $doctor->getEmail() ?> ">Send Email</a> </td>
+        <td> <a href="mailto:<?= $patient->getEmail() ?> ">Send Email</a> </td>
         <td>
             <a href="#"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
         </td>
@@ -53,5 +50,5 @@
 <?php endforeach; ?>
 
 </table>
-<div class="panel-footer" align="center">No more doctors</div>
+<div class="panel-footer" align="center">No more patients</div>
 </div>

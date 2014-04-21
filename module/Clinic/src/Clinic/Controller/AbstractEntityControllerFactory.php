@@ -29,9 +29,9 @@ class AbstractEntityControllerFactory implements AbstractFactoryInterface
         $parentLocator = $serviceLocator->getServiceLocator();
         $config = $parentLocator->get('config');
 
-        $entityManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $entityName = $config['entity_controllers'][$requestedName];
+        $entityManager = $parentLocator->get('Doctrine\ORM\EntityManager');
+        $entityPath = $config['entity_controllers'][$requestedName];
 
-        return new AdminBaseController($entityManager, $entityName, $requestedName);
+        return new AdminBaseController($entityManager, $entityPath, $requestedName);
     }
 }

@@ -48,7 +48,7 @@ abstract class AbstractAdminController extends AbstractActionController {
      * @access public
      * @param a$id
      */
-    public abstract function getAction();
+    public abstract function profileAction();
 
     /**
      * @access public

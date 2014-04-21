@@ -1,0 +1,65 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-user"></span> Doctors
+        </h3>
+    </div>
+    <table class="table table-condensed table-striped table-hover">
+
+    <!-- Headers -->
+    <thead>
+        <tr>
+            <th>#</th>
+            <th><span class="glyphicon glyphicon-pencil"></span> Joined</th>
+            <th><span class="glyphicon glyphicon-info-sign"></span> Name</th>
+            <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
+            <th><span class="glyphicon glyphicon-calendar"></span> Appointments</th>
+            <th><span class="glyphicon glyphicon-user"></span> Practitioners</th>
+            <th><span class="glyphicon glyphicon-plus"></span> Practitioner</th>
+            <th><span class="glyphicon glyphicon-envelope"></span> Email</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+
+<?php foreach($this->doctors as $doctor): ?>
+<!-- Data -->
+    <tr>
+        <td> <?= $doctor->getId() ?> </td>
+        <td> <?= $doctor->getJoined()->format('d M Y') ?></td>
+        <td> <?= $doctor->getName() ?> </td>
+        <td> <?= $doctor->getSurname() ?> </td>
+        <td>
+        <?php
+        $url = $this->url('admin', [
+            'controller' => 'doctor',
+            'action'     => 'appointments',
+            'id'         => $doctor->getId()
+        ]);
+        ?>
+            <a href="
+                ">View Appointments
+            </a>
+        </td>
+        <td><a href="">View Practitioners</a></td>
+        <td><a href="">Add Practitioner</a></td>
+        <td> <a href="mailto:<?= $doctor->getEmail() ?> ">Send Email</a> </td>
+        <td>
+            <a href="#"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
+        </td>
+        <td>
+            <?php $deleteUrl = $this->url('admin', [
+                    'controller' => 'doctor',
+                    'action' => 'delete',
+                    'id' => $doctor->getId()
+                ]); ?>
+            <a href="<?=$deleteUrl?>"><span class="glyphicon glyphicon-remove"></span>  Delete</a>
+        </td>
+    </tr>
+
+<?php endforeach; ?>
+
+</table>
+<div class="panel-footer" align="center">No more doctors</div>
+</div>

@@ -11,97 +11,103 @@ class AdminBaseController extends AbstractAdminController
 {
     protected $_entityManager;
     protected $_repository;
+    protected $_entityName;
     protected $_template;
 
-    function __construct($entityManager = null, $entityName = null, $entity = null)
+    function __construct($entityManager = null, $entityPath = null, $entityName = null)
     {
         if (!is_null($entityManager)) {
             $this->_entityManager = $entityManager;
         }
-        $this->_repository = $this->_entityManager->getRepository($entity);
+        $this->_entityName = $entityName;
+        $this->_repository = $this->_entityManager->getRepository($entityPath);
         $this->_template = "clinic/generic/{$entityName}";
+    }
+
+    public function getMessagePage($page, $message, $url)
+    {
+        $view = new ViewModel(['url' => $url, 'message' => $message]);
+        $view->setTemplate("clinic/generic/{$page}");
+        return $view;
     }
 
     public function indexAction()
     {
-        $appointments = $this->entityManager('Appointment');
-        $appointments = $appointments->findAll();
-        $appointmentsView = new ViewModel(['appointments' => $appointments]);
-        $appointmentsView->setTemplate('clinic/admin-index/appointments');
-
-        $doctors     = $this->entityManager('Doctor');
-        $doctors     = $doctors->findAll();
-        $doctorsView = new ViewModel(['doctors' => $doctors]);
-        $doctorsView->setTemplate('clinic/admin-index/doctors');
-
-        $practitioners     = $this->entityManager('Practitioner');
-        $practitioners     = $practitioners->findAll();
-        $practitionersView = new ViewModel(['practitioners' => $practitioners]);
-        $practitionersView->setTemplate('clinic/admin-index/practitioners');
-
-        $patients     = $this->entityManager('Patient');
-        $patients     = $patients->findAll();
-        $patientsView = new ViewModel(['patients' => $patients]);
-        $patientsView->setTemplate('clinic/admin-index/patients');
-
-        $view = new ViewModel();
-        $view->addChild($appointmentsView, 'appointmentsView')
-             ->addChild($doctorsView, 'doctorsView')
-             ->addChild($practitionersView, 'practitionersView')
-             ->addChild($patientsView, 'patientsView');
-
+        $entity = $this->_repository->findAll();
+        $view =  new ViewModel([$this->_entityName . 's' => $entity]);
+        $view->setTemplate($this->_template . '/all');
         return $view;
     }
 
     public function addAction()
     {
+        //TODO: Form
     }
 
     public function editAction()
     {
+        //TODO: Form
     }
 
-    public function getAction()
+    public function profileAction()
     {
         $id = $this->params('id');
-        $entity = null;
+        $entity = $this->_repository->find(['id' => $id]);
 
-        if($id) {
-            $entity = $this->_repository->find(['id'=>$id]);
+        if(!is_null($entity)) {
+            $view   =  new ViewModel([$this->_entityName => $entity]);
+            $view->setTemplate($this->_template . '/profile');
+            return $view;
         } else {
-            $entity = $this->_repository->findAll();
+           $this->redirect()->toRoute('admin', [
+                'controller' => $this->_entityName,
+                'action'     => 'index',
+            ]);
         }
-
-        $view =  new ViewModel($entityName . 's' => $entity);
-        $view->setTemplate($this->_template);
-        return $view;
     }
 
     public function deleteAction()
     {
         $id = $this->params('id');
-        $url = $this->getRequest()->getHeaders('Referer');
-        $url = '/home';
-        if($id) {
+        $entity = $this->_repository->find(['id' => $id]);
+        $referer = $this->getRequest()->getHeader('referer')->getUri();
+
+        if(!is_null($entity)) {
             try {
-                $entity = $this->_repository->find(['id'=>$id]);
-                $em->remove($entity);
-                $em->flush();
-                // success
-                return $this->getMessagePage('success', "{$entityName} deleted!", $url);
+                $this->_entityManager->remove($entity);
+                $this->_entityManager->flush();
+                return $this->getMessagePage(
+                    'success', "{$this->_entityName} with id {$id} was deleted!", $referer
+                );
+            } catch (Exception $e) {
+                break; // continue
             }
-            catch (Exception $e) {}
         }
-        return $this->getMessagePage('error', 'Unknown Error: Appointment was not to deleted!', $url);
+        return $this->getMessagePage('error', '{$this->_entityName} was not to deleted!', $referer);
     }
 
     /**
      * returns appointments
-     *
+     * @deprecated return profile...
      * @return void
      * @author
      **/
     public function appointmentsAction()
     {
+        $id = $this->params('id');
+        $entity = $this->_repository->find(['id' => $id]);
+
+        // $entity exist, isn't an array, or requested entity isn't appointment
+        if(!is_null($entity) && !is_array($entity) && !($this->_entityName == 'appointment')) {
+            $appointments = $entity->getAppointments();
+            $view = new ViewModel(['appointments' => $appointments]);
+            $view->setTemplate('clinic/generic/appointment/all');
+            return $view;
+        } else { // otherwise redirect to all appointments
+            $this->redirect()->toRoute('admin', [
+                'controller' => 'appointment',
+                'action'     => 'index',
+            ]);
+        }
     }
 }

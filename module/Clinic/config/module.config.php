@@ -3,13 +3,17 @@ return array(
 
     'router' => [
         'routes' => [
-            'restful' => [
+            'admin' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => [
-                    'route' => '/admin/:controller[/:id]',
+                    'route' => '/admin[/:controller][/:action][/:id]',
                     'constraints' => [
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[a-z0-9]*',
+                        'id'         => '[a-z0-9]*',
+                    ],
+                    'defaults' => [
+                        'controller' => 'appointment',
+                        'action'     => 'index',
                     ],
                 ],
             ],
