@@ -1,36 +1,27 @@
 <?php
-
 namespace Clinic\Controller;
-use Zend\View\Model\ViewModel;
 use Clinic\Controller\AbstractAdminController;
+use Zend\View\Model\ViewModel;
 
-/**
-*
-*/
 class AdminBaseController extends AbstractAdminController
 {
     protected $_entityManager;
     protected $_repository;
     protected $_entityName;
     protected $_template;
+    protected $_id;
 
-    function __construct($entityManager = null, $entityPath = null, $entityName = null)
+    function __construct($entityManager, $entityPath, $entityName)
     {
-        if (!is_null($entityManager)) {
-            $this->_entityManager = $entityManager;
-        }
-        $this->_entityName = $entityName;
-        $this->_repository = $this->_entityManager->getRepository($entityPath);
-        $this->_template = "clinic/generic/{$entityName}";
+        $this->_entityManager = $entityManager;
+        $this->_entityName    = $entityName;
+        $this->_repository    = $this->_entityManager->getRepository($entityPath);
+        $this->_template      = "clinic/generic/{$entityName}";
+        $this->_id            =  $this->params('id');
     }
-
-    public function getMessagePage($page, $message, $url)
-    {
-        $view = new ViewModel(['url' => $url, 'message' => $message]);
-        $view->setTemplate("clinic/generic/{$page}");
-        return $view;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function indexAction()
     {
         $entity = $this->_repository->findAll();
@@ -38,23 +29,14 @@ class AdminBaseController extends AbstractAdminController
         $view->setTemplate($this->_template . '/all');
         return $view;
     }
-
-    public function addAction()
-    {
-        //TODO: Form
-    }
-
-    public function editAction()
-    {
-        //TODO: Form
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function profileAction()
     {
-        $id = $this->params('id');
-        $entity = $this->_repository->find(['id' => $id]);
+        $entity = $this->_repository->find($this->_id);
 
-        if(!is_null($entity)) {
+        if(!is_null($entity) && !($this->_entityName == 'appointment')) {
             $view   =  new ViewModel([$this->_entityName => $entity]);
             $view->setTemplate($this->_template . '/profile');
             return $view;
@@ -65,50 +47,45 @@ class AdminBaseController extends AbstractAdminController
             ]);
         }
     }
-
+    /**
+     * @inheritdoc
+     */
     public function deleteAction()
     {
-        $id = $this->params('id');
-        $entity = $this->_repository->find(['id' => $id]);
-        $referer = $this->getRequest()->getHeader('referer')->getUri();
+        $entity = $this->_repository->find($this->_id);
 
-        if(!is_array($entity)) {
-            return $this->getMessagePage('error', 'Id not found', $referer);
+        $url = $this->url()->fromRoute('admin', [
+            'controller' => $this->_entityName,
+            'action' => 'index',
+        ]);
+
+        // id not found
+        if(is_null($entity)) {
+            return $this->getMessagePage('error', 'Id not found', $url);
         }
 
         try {
             $this->_entityManager->remove($entity);
             $this->_entityManager->flush();
             return $this->getMessagePage(
-                'success', "{$this->_entityName} with id {$id} was deleted!", $referer
+                'success', "{$this->_entityName} with id {$this->_id} was deleted!", $url
             );
         } catch (Exception $e) {
-            return $this->getMessagePage('error', '{$this->_entityName} was not to deleted!', $referer);
+            return $this->getMessagePage('error', "{$this->_entityName} was not to deleted!", $url);
         }
     }
-
     /**
-     * returns appointments
-     * @deprecated return profile...
-     * @return void
-     * @author
-     **/
-    public function appointmentsAction()
+     * @inheritdoc
+     */
+    public function addAction()
     {
-        $id = $this->params('id');
-        $entity = $this->_repository->find(['id' => $id]);
-
-        // $entity exist, isn't an array, or requested entity isn't appointment
-        if(!is_null($entity) && !($this->_entityName == 'appointment')) {
-            $appointments = $entity->getAppointments();
-            $view = new ViewModel(['appointments' => $appointments]);
-            $view->setTemplate('clinic/generic/appointment/all');
-            return $view;
-        }
-        // otherwise redirect to all appointments
-        $this->redirect()->toRoute('admin', [
-            'controller' => 'appointment',
-            'action'     => 'index',
-        ]);
+        //TODO: Form
+    }
+    /**
+     * @inheritdoc
+     */
+    public function editAction()
+    {
+        //TODO: Form
     }
 }
