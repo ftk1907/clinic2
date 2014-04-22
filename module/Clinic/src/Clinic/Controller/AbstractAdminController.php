@@ -22,7 +22,7 @@ abstract class AbstractAdminController extends AbstractActionController
      * returns index page with a list of all the persisted objects of an entity.
      * @return Zend\View\Model\ViewModel
      **/
-    public abstract function indexAction();
+    // public abstract function indexAction();
     /**
      * Create: returns form page of entity
      * on submit: persists entity

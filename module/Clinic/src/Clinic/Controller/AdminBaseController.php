@@ -9,7 +9,6 @@ class AdminBaseController extends AbstractAdminController
     protected $_repository;
     protected $_entityName;
     protected $_template;
-    protected $_id;
 
     function __construct($entityManager, $entityPath, $entityName)
     {
@@ -17,7 +16,6 @@ class AdminBaseController extends AbstractAdminController
         $this->_entityName    = $entityName;
         $this->_repository    = $this->_entityManager->getRepository($entityPath);
         $this->_template      = "clinic/generic/{$entityName}";
-        $this->_id            =  $this->params('id');
     }
     /**
      * @inheritdoc
@@ -34,7 +32,8 @@ class AdminBaseController extends AbstractAdminController
      */
     public function profileAction()
     {
-        $entity = $this->_repository->find($this->_id);
+        $id = $this->params('id');
+        $entity = $this->_repository->find($id);
 
         if(!is_null($entity) && !($this->_entityName == 'appointment')) {
             $view   =  new ViewModel([$this->_entityName => $entity]);
@@ -52,7 +51,8 @@ class AdminBaseController extends AbstractAdminController
      */
     public function deleteAction()
     {
-        $entity = $this->_repository->find($this->_id);
+        $id = $this->params('id');
+        $entity = $this->_repository->find($id);
 
         $url = $this->url()->fromRoute('admin', [
             'controller' => $this->_entityName,
@@ -68,10 +68,11 @@ class AdminBaseController extends AbstractAdminController
             $this->_entityManager->remove($entity);
             $this->_entityManager->flush();
             return $this->getMessagePage(
-                'success', "{$this->_entityName} with id {$this->_id} was deleted!", $url
+                'success', "{$this->_entityName} with id {$id} was deleted!", $url
             );
-        } catch (Exception $e) {
-            return $this->getMessagePage('error', "{$this->_entityName} was not to deleted!", $url);
+        } catch (\Exception $e) {
+            $errorCode = $e->getPrevious()->getCode();
+            return $this->getMessagePage('error', "[$errorCode]: {$this->_entityName} was not to deleted!", $url);
         }
     }
     /**

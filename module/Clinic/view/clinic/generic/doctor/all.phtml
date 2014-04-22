@@ -16,44 +16,45 @@
             <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
             <th><span class="glyphicon glyphicon-calendar"></span> Appointments</th>
             <th><span class="glyphicon glyphicon-user"></span> Practitioners</th>
-            <th><span class="glyphicon glyphicon-plus"></span> Practitioner</th>
             <th><span class="glyphicon glyphicon-envelope"></span> Email</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
 
 <?php foreach($this->doctors as $doctor): ?>
 <!-- Data -->
+    <?php
+    $profileUrl = $this->url('admin', [
+        'controller' => 'doctor','action' => 'profile','id' => $doctor->getId()
+    ]);
+    $editUrl = $this->url('admin', [
+        'controller' => 'doctor', 'action' => 'edit', 'id' => $doctor->getId()
+    ]);
+    $deleteUrl = $this->url('admin', [
+        'controller' => 'doctor', 'action' => 'delete', 'id' => $doctor->getId()
+    ]);
+    ?>
     <tr>
-        <td> <?= $doctor->getId() ?> </td>
-        <td> <?= $doctor->getJoined()->format('d M Y') ?></td>
-        <td> <?= $doctor->getName() ?> </td>
-        <td> <?= $doctor->getSurname() ?> </td>
+        <td><?= $doctor->getId() ?></td>
+        <td><?= $doctor->getJoined()->format('d M Y') ?></td>
+        <td><?= $doctor->getName() ?></td>
+        <td><?= $doctor->getSurname() ?></td>
+        <td><a href="<?=$profileUrl?>#appointments">
+                <span class="glyphicon glyphicon-list"></span> Appointments
+        </a></td>
         <td>
-        <?php
-        $url = $this->url('admin', [
-            'controller' => 'doctor',
-            'action'     => 'appointments',
-            'id'         => $doctor->getId()
-        ]);
-        ?>
-            <a href="
-                ">View Appointments
-            </a>
+            <a href="<?=$profileUrl?>#practitioners"><span class="glyphicon glyphicon-list"></span> Practitioners</a>
         </td>
-        <td><a href="">View Practitioners</a></td>
-        <td><a href="">Add Practitioner</a></td>
-        <td> <a href="mailto:<?= $doctor->getEmail() ?> ">Send Email</a> </td>
+        <td><a href="mailto:<?= $doctor->getEmail() ?> ">Send Email</a> </td>
         <td>
-            <a href="#"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
+            <a href="<?=$profileUrl?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
         </td>
         <td>
-            <?php $deleteUrl = $this->url('admin', [
-                    'controller' => 'doctor',
-                    'action' => 'delete',
-                    'id' => $doctor->getId()
-                ]); ?>
+            <a href="<?=$editUrl?>"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
+        </td>
+        <td>
             <a href="<?=$deleteUrl?>"><span class="glyphicon glyphicon-remove"></span>  Delete</a>
         </td>
     </tr>
