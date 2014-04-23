@@ -3,16 +3,10 @@ namespace Clinic\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity
- **/
-class Doctor
+/** @ORM\Entity */
+class Doctor implements PersonInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
+    /** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
     protected $id;
     /** @ORM\Column(type="string", unique=true, nullable=false) */
     protected $email;
