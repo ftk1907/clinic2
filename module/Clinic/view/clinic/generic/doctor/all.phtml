@@ -14,11 +14,6 @@
             <th><span class="glyphicon glyphicon-pencil"></span> Joined</th>
             <th><span class="glyphicon glyphicon-info-sign"></span> Name</th>
             <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
-            <th><span class="glyphicon glyphicon-calendar"></span> Appointments</th>
-            <th><span class="glyphicon glyphicon-user"></span> Practitioners</th>
-            <th><span class="glyphicon glyphicon-envelope"></span> Email</th>
-            <th></th>
-            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -41,21 +36,25 @@
         <td><?= $doctor->getJoined()->format('d M Y') ?></td>
         <td><?= $doctor->getName() ?></td>
         <td><?= $doctor->getSurname() ?></td>
-        <td><a href="<?=$profileUrl?>#appointments">
-                <span class="glyphicon glyphicon-list"></span> Appointments
-        </a></td>
-        <td>
-            <a href="<?=$profileUrl?>#practitioners"><span class="glyphicon glyphicon-list"></span> Practitioners</a>
-        </td>
-        <td><a href="mailto:<?= $doctor->getEmail() ?> ">Send Email</a> </td>
-        <td>
-            <a href="<?=$profileUrl?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
-        </td>
-        <td>
-            <a href="<?=$editUrl?>"><span class="glyphicon glyphicon-edit"></span>  Edit</a>
-        </td>
-        <td>
-            <a href="<?=$deleteUrl?>"><span class="glyphicon glyphicon-remove"></span>  Delete</a>
+        <td align="right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#practitioners">
+                    <span class="glyphicon glyphicon-list"></span>
+                    <span class="label label-info"><?= $doctor->getPractitioners()->count() ?></span>
+                    Practitioners </a>
+                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#appointments">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    <span class="label label-warning"><?= $doctor->getAppointments()->count() ?></span>
+                    Appointments </a>
+                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>">
+                    <span class="glyphicon glyphicon-list-alt"></span>  Profile</a>
+                <a class="btn btn-default btn-xs" href="mailto:<?= $doctor->getEmail() ?>">
+                    <span class="glyphicon glyphicon-envelope"></span> Email</a>
+                <a class="btn btn-default btn-xs" href="<?= $editUrl ?>">
+                    <span class="glyphicon glyphicon-edit"></span>  Edit</a>
+                <a class="btn btn-default btn-xs" href="<?= $deleteUrl ?>">
+                    <span class="glyphicon glyphicon-remove"></span>  Delete</a>
+            </div>
         </td>
     </tr>
 

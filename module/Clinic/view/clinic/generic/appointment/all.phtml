@@ -25,7 +25,11 @@
     <!-- Data -->
         <?php
         $dateObj    = $appointment->getDate();
-        $date       = $dateObj->format('d M Y');
+        $date       = [
+            'd' => $dateObj->format('d'),
+            'm' => $dateObj->format('M'),
+            'y' => $dateObj->format('Y'),
+        ];
         $time       = $dateObj->format('H:i');
         $patient    = $appointment->getPatient();
         $practitioner = $appointment->getPractitioner();
@@ -42,7 +46,7 @@
         echo "
         <tr>
             <td>{$appointment->getId()}</td>
-            <td><strong>{$date}</strong></td>
+            <td><strong>{$date['d']} {$date['m']}</strong> {$date['y']}</td>
             <td>{$time}</td>
             <td><a href='{$patientUrl}'>{$patient->getName()} {$patient->getSurname()}</a></td>
             <td><a href='{$practitionerUrl}'>{$practitioner->getName()} {$practitioner->getSurname()}</a></td>

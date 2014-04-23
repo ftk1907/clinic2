@@ -32,7 +32,7 @@ class AdminBaseController extends AbstractAdminController
      */
     public function profileAction()
     {
-        $id = $this->params('id');
+        $id     = $this->params('id');
         $entity = $this->_repository->find($id);
 
         if(!is_null($entity) && !($this->_entityName == 'appointment')) {
@@ -51,7 +51,7 @@ class AdminBaseController extends AbstractAdminController
      */
     public function deleteAction()
     {
-        $id = $this->params('id');
+        $id     = $this->params('id');
         $entity = $this->_repository->find($id);
 
         $url = $this->url()->fromRoute('admin', [
