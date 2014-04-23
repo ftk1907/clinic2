@@ -41,7 +41,8 @@
         <td> <?= $practitioner->getJoined()->format('d M Y') ?></td>
         <td> <?= $practitioner->getSurname() ?> </td>
         <td> <?= $practitioner->getName() ?> </td>
-        <td><a href="<?= $supervisorUrl ?>"><span class="glyphicon glyphicon-user"></span> <?= $supervisor->getName() . ' ' . $supervisor->getSurname() ?></a></td>
+        <td><a href="<?= $supervisorUrl ?>"><span class="glyphicon glyphicon-user"></span>
+            <?= $supervisor->getName() . ' ' . $supervisor->getSurname() ?></a></td>
         <td align="right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#appointments">

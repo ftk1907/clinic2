@@ -11,8 +11,10 @@ class AbstractEntityControllerFactory implements AbstractFactoryInterface
         if (! $serviceLocator instanceof AbstractPluginManager) {
             throw new \BadMethodCallException('This abstract factory is meant to be used only with a plugin manager');
         }
+
         $parentLocator = $serviceLocator->getServiceLocator();
-        $config = $parentLocator->get('config');
+        $config        = $parentLocator->get('config');
+
         return isset($config['entity_controllers'][$requestedName]);
     }
 
@@ -23,10 +25,9 @@ class AbstractEntityControllerFactory implements AbstractFactoryInterface
         }
 
         $parentLocator = $serviceLocator->getServiceLocator();
-        $config = $parentLocator->get('config');
-
+        $config        = $parentLocator->get('config');
         $entityManager = $parentLocator->get('Doctrine\ORM\EntityManager');
-        $entityPath = $config['entity_controllers'][$requestedName];
+        $entityPath    = $config['entity_controllers'][$requestedName];
 
         return new AdminBaseController($entityManager, $entityPath, $requestedName);
     }

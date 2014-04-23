@@ -23,7 +23,7 @@ class AdminBaseController extends AbstractAdminController
     public function indexAction()
     {
         $entity = $this->_repository->findAll();
-        $view =  new ViewModel([$this->_entityName . 's' => $entity]);
+        $view   = new ViewModel([$this->_entityName . 's' => $entity]);
         $view->setTemplate($this->_template . '/all');
         return $view;
     }
@@ -36,7 +36,7 @@ class AdminBaseController extends AbstractAdminController
         $entity = $this->_repository->find($id);
 
         if(!is_null($entity) && !($this->_entityName == 'appointment')) {
-            $view   =  new ViewModel([$this->_entityName => $entity]);
+            $view = new ViewModel([$this->_entityName => $entity]);
             $view->setTemplate($this->_template . '/profile');
             return $view;
         } else {
