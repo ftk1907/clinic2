@@ -3,6 +3,7 @@
     <?=$this->patient->getName() . ' ' . $this->patient->getSurname()?></h1>
 </div>
 <?php
-    echo $this->partial('clinic/generic/appointment/all.phtml', [
-        'appointments' => $this->patient->getAppointments()
-    ]);
+echo $this->partial('clinic/generic/appointment/profile.phtml', [
+    'person' => $this->patient
+]);
+?>

@@ -2,6 +2,7 @@
 namespace Clinic\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /** @ORM\Entity */
 class Patient implements PersonInterface
@@ -205,9 +206,41 @@ class Patient implements PersonInterface
      *
      * @return mixed
      */
-    public function getAppointments()
+    public function getAppointments($from = null, $to = null)
     {
-        return $this->appointments;
+        $appointments = $this->appointments;
+
+        if($from instanceof \DateTime && $to instanceof \DateTime) {
+            $criteria = Criteria::create()
+                ->where(Criteria::expr()->gte('date', $from))
+                ->andWhere(Criteria::expr()->lte('date', $to))
+            ;
+            $appointments = $appointments->matching($criteria);
+        }
+
+        return $appointments->toArray();
+
+        // if(!is_string($period)) {
+        //     return $appointments;
+        // }
+
+        // switch($period){
+        //     case 'today':
+        //         $from  = new \DateTime('today');
+        //         $to    = new \DateTime('tomorrow');
+        //         break;
+        //     case 'tomorrow':
+        //         $from     = new \DateTime('tomorrow');
+        //         $interval = new \DateInterval('1 days');
+        //         $to       = new \DateTime('tomorrow')->add($interval);
+        //         break;
+        //     case 'this month':
+        //         $from     = new \DateTime('this month');
+        //         $tomorrow = new \DateTime('next month');
+        //         break;
+        //     default:
+        //         return $appointments;
+        // }
     }
 
     /**

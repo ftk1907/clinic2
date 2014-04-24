@@ -334,12 +334,12 @@ class Practitioner extends \Clinic\Entity\Practitioner implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getAppointments()
+    public function getAppointments($from = NULL, $to = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAppointments', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAppointments', array($from, $to));
 
-        return parent::getAppointments();
+        return parent::getAppointments($from, $to);
     }
 
     /**

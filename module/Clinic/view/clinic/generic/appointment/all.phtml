@@ -1,10 +1,4 @@
-<div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <span class="glyphicon glyphicon-calendar"></span> Appointments
-        </h3>
-    </div>
+<?php if(!empty($this->appointments)): ?>
     <table class="table table-condensed table-striped table-hover">
     <!-- Headers -->
         <thead>
@@ -30,7 +24,6 @@
             'm' => $dateObj->format('M'),
             'y' => $dateObj->format('Y'),
         ];
-        $time       = $dateObj->format('H:i');
         $patient    = $appointment->getPatient();
         $practitioner = $appointment->getPractitioner();
         $doctor     = $appointment->getDoctor();
@@ -64,5 +57,6 @@
     ?>
     <?php endforeach; ?>
     </table>
-    <div class="panel-footer" align="center">No more appointments</div>
-</div>
+<?php else: ?>
+    <div class="panel-footer" align="center">No appointments</div>
+<?php endif; ?>

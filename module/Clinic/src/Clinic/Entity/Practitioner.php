@@ -207,8 +207,15 @@ class Practitioner implements PersonInterface
      *
      * @return mixed
      */
-    public function getAppointments()
+    public function getAppointments($from = null, $to = null)
     {
+        if($from instanceof DateTime && $to instanceof DateTime){
+            $criteria = Criteria::create()
+                ->where(Criteria::expr()->gte('date', $from))
+                ->andWhere(Criteria::expr()->lte('date', $to))
+            ;
+            return $this->appointments->matching($criteria);
+        }
         return $this->appointments;
     }
 
