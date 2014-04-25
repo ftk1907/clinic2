@@ -9,48 +9,73 @@
                 <th><span class="glyphicon glyphicon-user"></span> Patient</th>
                 <th><span class="glyphicon glyphicon-user"></span> Practitioner</th>
                 <th><span class="glyphicon glyphicon-user"></span> Doctor</th>
-                <th><span class="glyphicon glyphicon-question-sign"></span> Visited</th>
-                <th><span class="glyphicon glyphicon-question-sign"></span> Confirmed</th>
-                <th><!-- Edit --></th>
-                <th><!-- Delete--></th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
     <?php foreach($this->appointments as $appointment): ?>
     <!-- Data -->
         <?php
+        $id         = $appointment->getId();
         $dateObj    = $appointment->getDate();
         $date       = [
             'd' => $dateObj->format('d'),
             'm' => $dateObj->format('M'),
             'y' => $dateObj->format('Y'),
+            'h' => $dateObj->format('h'),
+            'i' => $dateObj->format('i'),
         ];
         $patient    = $appointment->getPatient();
         $practitioner = $appointment->getPractitioner();
         $doctor     = $appointment->getDoctor();
         $yesIcon    = '<span class="glyphicon glyphicon-ok"></span>';
         $noIcon     = '<span class="glyphicon glyphicon-remove"></span>';
-        $missed     = ($appointment->getMissed())? $yesIcon : $noIcon;
-        $confirmed  = ($appointment->getConfirmed())? $yesIcon : $noIcon;
+
+        $missed     = $appointment->getMissed();
+        $confirmed  = $appointment->getConfirmed();
+
+        $confirmedLabel = '<span class="label label-success">Confirmed</span>';
+        $visitedLabel   = '<span class="label label-success">Visited</span>';
+
+        $missButton    = ($missed)    ? $yesIcon . ' Attend'    : $noIcon  . ' Unattend';
+        $confirmButton = ($confirmed) ? $noIcon  . ' Unconfirm' : $yesIcon . ' Confirm';
+
+        $missLabel      = ($missed)    ? '' : $visitedLabel;
+        $confirmLabel   = ($confirmed) ? $confirmedLabel : '';
+
+
+        $confirmUrl = $this->url('admin', ['controller' => 'appointment', 'action' => 'confirm','id' => $id]);
+        $visitUrl   = $this->url('admin', ['controller' => 'appointment', 'action' => 'visit',  'id' => $id]);
         $editUrl    = $this->url('admin', ['controller' => 'appointment', 'action' => 'edit',   'id' => $id]);
         $deleteUrl  = $this->url('admin', ['controller' => 'appointment', 'action' => 'delete', 'id' => $id]);
-        $patientUrl = $this->url('admin', ['controller' => 'patient',     'action' => 'index',  'id' => $id]);
-        $doctorUrl  = $this->url('admin', ['controller' => 'doctor',      'action' => 'index',  'id' => $id]);
-        $practitionerUrl = $this->url('admin', ['controller' => 'practitioner','action' => 'index', 'id' => $id]);
+        $patientUrl = $this->url('admin', [
+            'controller' => 'patient',     'action' => 'profile',  'id' => $patient->getId()
+        ]);
+        $doctorUrl  = $this->url('admin', [
+            'controller' => 'doctor', 'action' => 'profile',  'id' => $doctor->getId()
+        ]);
+        $practitionerUrl = $this->url('admin', [
+            'controller' => 'practitioner','action' => 'profile', 'id' => $practitioner->getId()
+        ]);
         echo "
         <tr>
             <td>{$appointment->getId()}</td>
             <td><strong>{$date['d']} {$date['m']}</strong> {$date['y']}</td>
-            <td>{$time}</td>
+            <td>{$date['h']}:{$date['i']}</td>
             <td><a href='{$patientUrl}'>{$patient->getName()} {$patient->getSurname()}</a></td>
             <td><a href='{$practitionerUrl}'>{$practitioner->getName()} {$practitioner->getSurname()}</a></td>
             <td><a href='{$doctorUrl}'>{$doctor->getName()} {$doctor->getSurname()}</a></td>
-            <td>{$missed}</td>
-            <td>{$confirmed}</td>
-            <td>
-                <a href='{$editUrl}'><span class='glyphicon glyphicon-edit'></span>  Edit</a>
-            </td>
-            <td>
-                <a href='{$deleteUrl}'><span class='glyphicon glyphicon-remove'></span>  Delete</a>
+            <td>{$confirmLabel}</td>
+            <td>{$missLabel}</td>
+            <td align='right'>
+
+                <a class='btn btn-default btn-xs' href='{$visitUrl}'>{$missButton}</a>
+                <a class='btn btn-default btn-xs' href='{$confirmUrl}'>{$confirmButton}</a>
+                <a class='btn btn-default btn-xs' href='{$editUrl}'>
+                    <span class='glyphicon glyphicon-edit'></span>  Edit</a>
+                <a class='btn btn-default btn-xs' href='{$deleteUrl}'>
+                    <span class='glyphicon glyphicon-remove'></span>  Delete</a>
             </td>
         </tr>
         ";

@@ -2,8 +2,8 @@
     <h1><small>Patient</small>
     <?=$this->patient->getName() . ' ' . $this->patient->getSurname()?></h1>
 </div>
+<a name="appointments"></a>
 <?php
-echo $this->partial('clinic/generic/appointment/profile.phtml', [
+echo $this->partial('clinic/generic/appointment/template.phtml', [
     'person' => $this->patient
 ]);
-?>

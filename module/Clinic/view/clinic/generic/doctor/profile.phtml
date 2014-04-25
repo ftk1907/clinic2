@@ -1,11 +1,11 @@
 <div class="page-header">
     <h1><small>Doctor</small> <?=$this->doctor->getName() . ' ' . $this->doctor->getSurname()?></h1>
 </div>
-<?php
-    echo $this->partial('clinic/generic/practitioner/all.phtml', [
-        'practitioners' => $this->doctor->getPractitioners()
-    ]);
-    echo $this->partial('clinic/generic/appointment/all.phtml', [
-        'appointments' => $this->doctor->getAppointments()
-    ]);
-?>
+<a name="practitioners"></a>
+<?php echo $this->partial('clinic/generic/practitioner/all.phtml', [
+    'practitioners' => $this->doctor->getPractitioners()
+]); ?>
+<a name="appointments"></a>
+<?php echo $this->partial('clinic/generic/appointment/template.phtml', [
+    'person' => $this->doctor
+]);

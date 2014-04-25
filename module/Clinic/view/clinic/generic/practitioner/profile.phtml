@@ -4,8 +4,9 @@
         <?=$this->practitioner->getName() . ' ' . $this->practitioner->getSurname()?>
     </h1>
 </div>
-<h1></h1>
+<a name="appointments"></a>
 <?php
-    echo $this->partial('clinic/generic/appointment/all.phtml', [
-        'appointments' => $this->practitioner->getAppointments()
-    ]);
+echo $this->partial('clinic/generic/appointment/template.phtml', [
+    'person' => $this->practitioner
+]);
+?>

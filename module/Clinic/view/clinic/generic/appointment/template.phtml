@@ -1,7 +1,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">Today</div>
     <?php
-    echo $this->partial('clinic/generic/appointment/all.phtml', [
+    echo $this->partial('clinic/generic/appointment/table.phtml', [
         'appointments' => $this->person->getAppointments(new DateTime("today"), new DateTime("tomorrow"))
     ]);
     ?>
@@ -9,7 +9,7 @@
 <div class="panel panel-info">
     <div class="panel-heading">up coming</div>
     <?php
-    echo $this->partial('clinic/generic/appointment/all.phtml', [
+    echo $this->partial('clinic/generic/appointment/table.phtml', [
         'appointments' => $this->person->getAppointments(
             new DateTime("tomorrow"), (new DateTime("tomorrow"))->add(new DateInterval("P1W"))
         )
@@ -19,7 +19,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">Archive</div>
     <?php
-    echo $this->partial('clinic/generic/appointment/all.phtml', [
+    echo $this->partial('clinic/generic/appointment/table.phtml', [
         'appointments' => $this->person->getAppointments(
             (new DateTime("today"))->sub(new DateInterval("P5M")), new DateTime("today")
         )

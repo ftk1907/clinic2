@@ -64,10 +64,10 @@ class Doctor extends \Clinic\Entity\Doctor implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'email', 'name', 'surname', 'joined', 'password', 'practitioners', 'appointments');
+            return array('__isInitialized__', 'id', 'email', 'name', 'surname', 'joined', 'password', 'avatarUrl', 'practitioners', 'appointments');
         }
 
-        return array('__isInitialized__', 'id', 'email', 'name', 'surname', 'joined', 'password', 'practitioners', 'appointments');
+        return array('__isInitialized__', 'id', 'email', 'name', 'surname', 'joined', 'password', 'avatarUrl', 'practitioners', 'appointments');
     }
 
     /**
@@ -351,6 +351,28 @@ class Doctor extends \Clinic\Entity\Doctor implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAppointments', array($appointments));
 
         return parent::setAppointments($appointments);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAvatarUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAvatarUrl', array());
+
+        return parent::getAvatarUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAvatarUrl($avatarUrl)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAvatarUrl', array($avatarUrl));
+
+        return parent::setAvatarUrl($avatarUrl);
     }
 
 }

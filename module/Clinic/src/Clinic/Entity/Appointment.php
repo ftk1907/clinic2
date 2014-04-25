@@ -3,16 +3,10 @@ namespace Clinic\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity
- **/
+/** @ORM\Entity */
 class Appointment
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
+    /** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
     protected $id;
     /** @ORM\Column(type="boolean", nullable=true) **/
     protected $confirmed = false;
@@ -20,6 +14,14 @@ class Appointment
     protected $date;
     /** @ORM\Column(type="boolean", nullable=true) **/
     protected $missed = true;
+    /** @ORM\Column(type="string", nullable=true) **/
+    protected $complaints;
+    /** @ORM\Column(type="string", nullable=true) **/
+    protected $patientFeedback;
+    /** @ORM\Column(type="string", nullable=true) **/
+    protected $doctorFeedback;
+    /** @ORM\Column(type="string", nullable=true) **/
+    protected $practitionerFeedback;
     /**
      * @ORM\JoinColumn(name="doctor", referencedColumnName="id", nullable=false)
      * @ORM\ManyToOne(targetEntity="Doctor", inversedBy="appointments")
@@ -35,6 +37,7 @@ class Appointment
      * @ORM\ManyToOne(targetEntity="Patient", inversedBy="appointments")
      **/
     protected $patient;
+
 
     // Getters and Setters
 
@@ -202,6 +205,102 @@ class Appointment
     public function setPatient($patient)
     {
         $this->patient = $patient;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of complaints.
+     *
+     * @return mixed
+     */
+    public function getComplaints()
+    {
+        return $this->complaints;
+    }
+
+    /**
+     * Sets the value of complaints.
+     *
+     * @param mixed $complaints the complaints
+     *
+     * @return self
+     */
+    public function setComplaints($complaints)
+    {
+        $this->complaints = $complaints;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of patientFeedback.
+     *
+     * @return mixed
+     */
+    public function getPatientFeedback()
+    {
+        return $this->patientFeedback;
+    }
+
+    /**
+     * Sets the value of patientFeedback.
+     *
+     * @param mixed $patientFeedback the patient feedback
+     *
+     * @return self
+     */
+    public function setPatientFeedback($patientFeedback)
+    {
+        $this->patientFeedback = $patientFeedback;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of doctorFeedback.
+     *
+     * @return mixed
+     */
+    public function getDoctorFeedback()
+    {
+        return $this->doctorFeedback;
+    }
+
+    /**
+     * Sets the value of doctorFeedback.
+     *
+     * @param mixed $doctorFeedback the doctor feedback
+     *
+     * @return self
+     */
+    public function setDoctorFeedback($doctorFeedback)
+    {
+        $this->doctorFeedback = $doctorFeedback;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of practitionerFeedback.
+     *
+     * @return mixed
+     */
+    public function getPractitionerFeedback()
+    {
+        return $this->practitionerFeedback;
+    }
+
+    /**
+     * Sets the value of practitionerFeedback.
+     *
+     * @param mixed $practitionerFeedback the practitioner feedback
+     *
+     * @return self
+     */
+    public function setPractitionerFeedback($practitionerFeedback)
+    {
+        $this->practitionerFeedback = $practitionerFeedback;
 
         return $this;
     }

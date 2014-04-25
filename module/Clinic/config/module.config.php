@@ -12,8 +12,8 @@ return array(
                         'id'         => '[a-z0-9]*',
                     ],
                     'defaults' => [
-                        'controller' => 'appointment',
-                        'action'     => 'index',
+                        // 'controller' => 'appointment',
+                        // 'action'     => 'index',
                     ],
                 ],
             ],

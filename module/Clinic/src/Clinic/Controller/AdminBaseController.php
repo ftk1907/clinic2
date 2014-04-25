@@ -75,6 +75,45 @@ class AdminBaseController extends AbstractAdminController
             return $this->getMessagePage('error', "[$errorCode]: {$this->_entityName} was not to deleted!", $url);
         }
     }
+    public function visitAction()
+    {
+        $url = $this->url()->fromRoute('admin', [
+            'controller' => $this->_entityName,
+            'action' => 'index',
+        ]);
+        if($this->_entityName == 'appointment') {
+            $id     = $this->params('id');
+            $entity = $this->_repository->find($id);
+            if(!is_null($entity)) {
+                $entity->setMissed(!$entity->getMissed());
+                $this->_entityManager->persist($entity);
+                $this->_entityManager->flush();
+                ;
+                return $this->getMessagePage('success', 'Action applied', $url);
+            }
+        }
+        return $this->getMessagePage('error', 'Invalid URL', $url);
+    }
+    public function confirmAction()
+    {
+        $url = $this->url()->fromRoute('admin', [
+            'controller' => $this->_entityName,
+            'action' => 'index',
+        ]);
+        if($this->_entityName == 'appointment') {
+            $id     = $this->params('id');
+            $entity = $this->_repository->find($id);
+            if(!is_null($entity)) {
+                $entity->setConfirmed(!$entity->getConfirmed());
+                $this->_entityManager->persist($entity);
+                $this->_entityManager->flush();
+                ;
+                return $this->getMessagePage('success', 'Action applied', $url);
+            }
+        }
+        return $this->getMessagePage('error', 'Invalid URL', $url);
+    }
+
     /**
      * @inheritdoc
      */

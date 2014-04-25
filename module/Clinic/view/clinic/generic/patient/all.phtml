@@ -5,6 +5,7 @@
             <span class="glyphicon glyphicon-user"></span> Patients
         </h3>
     </div>
+    <?php if(!empty($this->patients)): ?>
     <table class="table table-striped table-hover">
 
     <!-- Headers -->
@@ -22,19 +23,13 @@
 <!-- Data -->
     <?php
     $profileUrl = $this->url('admin', [
-        'controller' => 'patient',
-        'action'     => 'profile',
-        'id'         => $patient->getId()
+        'controller' => 'patient','action' => 'profile', 'id' => $patient->getId()
     ]);
     $editUrl = $this->url('admin', [
-        'controller' => 'patient',
-        'action'     => 'edit',
-        'id'         => $patient->getId()
+        'controller' => 'patient', 'action' => 'edit', 'id' => $patient->getId()
     ]);
-    $deleteUrl = $this->url('admin', [
-        'controller' => 'patient',
-        'action'     => 'delete',
-        'id'         => $patient->getId()
+    $deleteUrl = $this->url(
+        'admin', ['controller' => 'patient', 'action' => 'delete', 'id' => $patient->getId()
     ]);
     ?>
     <tr>
@@ -43,23 +38,25 @@
         <td><?= $patient->getName() ?></td>
         <td><?= $patient->getSurname() ?></td>
         <td align="right">
-            <div class="btn-group">
-                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#appointments">
-                    <span class="glyphicon glyphicon-calendar"></span> Appointments</a>
-                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>">
-                    <span class="glyphicon glyphicon-list-alt"></span>  Profile</a>
-                <a class="btn btn-default btn-xs" href="mailto:<?= $patient->getEmail() ?>">
-                    <span class="glyphicon glyphicon-envelope"></span> Email</a>
-                <a class="btn btn-default btn-xs" href="<?= $editUrl ?>">
-                    <span class="glyphicon glyphicon-edit"></span>  Edit</a>
-                <a class="btn btn-default btn-xs" href="<?= $deleteUrl ?>">
-                    <span class="glyphicon glyphicon-remove"></span>  Delete</a>
-            </div>
+            <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#appointments">
+                <span class="glyphicon glyphicon-calendar"></span>
+                <span class="label label-warning"><?= count($patient->getAppointments()) ?></span>
+                 Appointments</a>
+            <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>">
+                <span class="glyphicon glyphicon-list-alt"></span>  Profile</a>
+            <a class="btn btn-default btn-xs" href="mailto:<?= $patient->getEmail() ?>">
+                <span class="glyphicon glyphicon-envelope"></span> Email</a>
+            <a class="btn btn-default btn-xs" href="<?= $editUrl ?>">
+                <span class="glyphicon glyphicon-edit"></span>  Edit</a>
+            <a class="btn btn-default btn-xs" href="<?= $deleteUrl ?>">
+                <span class="glyphicon glyphicon-remove"></span>  Delete</a>
         </td>
 
     </tr>
 <?php endforeach; ?>
 
 </table>
-<div class="panel-footer" align="center">No more patients</div>
+<?php else: ?>
+<div class="panel-footer" align="center">No patients</div>
+<?php endif; ?>
 </div>

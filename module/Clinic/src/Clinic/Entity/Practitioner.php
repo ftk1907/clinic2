@@ -2,6 +2,7 @@
 namespace Clinic\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /** @ORM\Entity */
 class Practitioner implements PersonInterface
@@ -18,6 +19,8 @@ class Practitioner implements PersonInterface
     protected $joined;
     /** @ORM\Column(type="string", nullable=false) */
     protected $password;
+    /** @ORM\Column(type="string", nullable=true) */
+    protected $avatarUrl;
     /** @ORM\OneToMany(targetEntity="Appointment", mappedBy="practitioner") */
     protected $appointments;
     /**
@@ -209,14 +212,17 @@ class Practitioner implements PersonInterface
      */
     public function getAppointments($from = null, $to = null)
     {
-        if($from instanceof DateTime && $to instanceof DateTime){
+        $appointments = $this->appointments;
+
+        if($from instanceof \DateTime && $to instanceof \DateTime) {
             $criteria = Criteria::create()
                 ->where(Criteria::expr()->gte('date', $from))
                 ->andWhere(Criteria::expr()->lte('date', $to))
             ;
-            return $this->appointments->matching($criteria);
+            $appointments = $appointments->matching($criteria);
         }
-        return $this->appointments;
+
+        return $appointments->toArray();
     }
 
     /**
@@ -238,5 +244,29 @@ class Practitioner implements PersonInterface
         echo "<pre>";
         var_dump($thiso);
         echo "</pre>";
+    }
+
+    /**
+     * Gets the value of avatarUrl.
+     *
+     * @return mixed
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatarUrl;
+    }
+
+    /**
+     * Sets the value of avatarUrl.
+     *
+     * @param mixed $avatarUrl the avatar url
+     *
+     * @return self
+     */
+    public function setAvatarUrl($avatarUrl)
+    {
+        $this->avatarUrl = $avatarUrl;
+
+        return $this;
     }
 } // END public class Practitioners
