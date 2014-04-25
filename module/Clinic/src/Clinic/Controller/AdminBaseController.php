@@ -35,16 +35,17 @@ class AdminBaseController extends AbstractAdminController
         $id     = $this->params('id');
         $entity = $this->_repository->find($id);
 
-        if(!is_null($entity) && !($this->_entityName == 'appointment')) {
-            $view = new ViewModel([$this->_entityName => $entity]);
-            $view->setTemplate($this->_template . '/profile');
-            return $view;
-        } else {
+        if(is_null($entity)) {
            $this->redirect()->toRoute('admin', [
                 'controller' => $this->_entityName,
                 'action'     => 'index',
             ]);
+           return $this->getMessagePage('error', 'Id not found', $url);
         }
+
+        $view = new ViewModel([$this->_entityName => $entity]);
+        $view->setTemplate($this->_template . '/profile');
+        return $view;
     }
     /**
      * @inheritdoc

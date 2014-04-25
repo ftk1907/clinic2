@@ -6,56 +6,61 @@
         </h3>
     </div>
     <?php if(!empty($this->patients)): ?>
-    <table class="table table-striped table-hover">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
 
-    <!-- Headers -->
-    <thead>
+        <!-- Headers -->
+        <thead>
+            <tr>
+                <th>#</th>
+                <th><span class="glyphicon glyphicon-pencil"></span> Joined</th>
+                <th><span class="glyphicon glyphicon-info-sign"></span> Name</th>
+                <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+    <?php foreach($this->patients as $patient): ?>
+    <!-- Data -->
+        <?php
+        $profileUrl = $this->url('admin', [
+            'controller' => 'patient','action' => 'profile', 'id' => $patient->getId()
+        ]);
+        $editUrl = $this->url('admin', [
+            'controller' => 'patient', 'action' => 'edit', 'id' => $patient->getId()
+        ]);
+        $deleteUrl = $this->url(
+            'admin', ['controller' => 'patient', 'action' => 'delete', 'id' => $patient->getId()
+        ]);
+        $verified  = ($patient->getVerified()) ? '<span class="label label-success"><label class="glyphicon glyphicon-ok-circle"></label> Verified</span>' : '';
+        ?>
         <tr>
-            <th>#</th>
-            <th><span class="glyphicon glyphicon-pencil"></span> Joined</th>
-            <th><span class="glyphicon glyphicon-info-sign"></span> Name</th>
-            <th><span class="glyphicon glyphicon-info-sign"></span> Surname</th>
-            <th></th>
+            <td><?= $patient->getId() ?></td>
+            <td><?= $patient->getJoined()->format('d M Y') ?></td>
+            <td><?= $patient->getName() ?></td>
+            <td><?= $patient->getSurname() ?></td>
+            <td><?= $verified ?></td>
+            <td align="right">
+                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#appointments">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    <span class="label label-warning"><?= count($patient->getAppointments()) ?></span>
+                     Appointments</a>
+                <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>">
+                    <span class="glyphicon glyphicon-list-alt"></span>  Profile</a>
+                <a class="btn btn-default btn-xs" href="mailto:<?= $patient->getEmail() ?>">
+                    <span class="glyphicon glyphicon-envelope"></span> Email</a>
+                <a class="btn btn-default btn-xs" href="<?= $editUrl ?>">
+                    <span class="glyphicon glyphicon-edit"></span>  Edit</a>
+                <a class="btn btn-default btn-xs" href="<?= $deleteUrl ?>">
+                    <span class="glyphicon glyphicon-remove"></span>  Delete</a>
+            </td>
+
         </tr>
-    </thead>
+    <?php endforeach; ?>
 
-<?php foreach($this->patients as $patient): ?>
-<!-- Data -->
-    <?php
-    $profileUrl = $this->url('admin', [
-        'controller' => 'patient','action' => 'profile', 'id' => $patient->getId()
-    ]);
-    $editUrl = $this->url('admin', [
-        'controller' => 'patient', 'action' => 'edit', 'id' => $patient->getId()
-    ]);
-    $deleteUrl = $this->url(
-        'admin', ['controller' => 'patient', 'action' => 'delete', 'id' => $patient->getId()
-    ]);
-    ?>
-    <tr>
-        <td><?= $patient->getId() ?></td>
-        <td><?= $patient->getJoined()->format('d M Y') ?></td>
-        <td><?= $patient->getName() ?></td>
-        <td><?= $patient->getSurname() ?></td>
-        <td align="right">
-            <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>#appointments">
-                <span class="glyphicon glyphicon-calendar"></span>
-                <span class="label label-warning"><?= count($patient->getAppointments()) ?></span>
-                 Appointments</a>
-            <a class="btn btn-default btn-xs" href="<?= $profileUrl ?>">
-                <span class="glyphicon glyphicon-list-alt"></span>  Profile</a>
-            <a class="btn btn-default btn-xs" href="mailto:<?= $patient->getEmail() ?>">
-                <span class="glyphicon glyphicon-envelope"></span> Email</a>
-            <a class="btn btn-default btn-xs" href="<?= $editUrl ?>">
-                <span class="glyphicon glyphicon-edit"></span>  Edit</a>
-            <a class="btn btn-default btn-xs" href="<?= $deleteUrl ?>">
-                <span class="glyphicon glyphicon-remove"></span>  Delete</a>
-        </td>
-
-    </tr>
-<?php endforeach; ?>
-
-</table>
+    </table>
+</div>
 <?php else: ?>
 <div class="panel-footer" align="center">No patients</div>
 <?php endif; ?>

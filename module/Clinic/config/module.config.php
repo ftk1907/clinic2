@@ -13,7 +13,7 @@ return array(
                     ],
                     'defaults' => [
                         // 'controller' => 'appointment',
-                        // 'action'     => 'index',
+                        'action'     => 'index',
                     ],
                 ],
             ],
