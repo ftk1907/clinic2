@@ -1,0 +1,11 @@
+<div class="page-header">
+    <h1>Appointments</h1>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">All appointments</div>
+    <?php
+    echo $this->partial('clinic/generic/appointment/table.phtml', [
+        'appointments' => $this->appointments
+    ]);
+    ?>
+</div>
