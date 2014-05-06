@@ -1,0 +1,20 @@
+# RewriteBase /
+
+# RewriteRule ^\.htaccess$ - [F]
+
+# RewriteCond %{REQUEST_URI} = "/cbooking/"
+# RewriteRule ^.*$ /cbooking/public/index.php [NC, L]
+
+# RewriteCond %{REQUEST_URI} !^/cbooking/public/.*$
+# RewriteRule ^(.*)$ /cbooking/public/$1
+
+# RewriteCond %{REQUEST_FILENAME} -f
+# RewriteRule ^.*$ - [NC,L]
+
+# RewriteRule ^c-booking/public/.*$ /c-booking/public/index.php [NC, L]
+
+
+# RewriteCond %{REQUEST_FILENAME} -f
+# RewriteRule ^.*$ - [NC,L]
+
+# RewriteRule ^public/.*$ /cbooking/public/index.php [NC,L]

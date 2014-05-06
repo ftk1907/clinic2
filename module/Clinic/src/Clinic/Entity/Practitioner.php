@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Criteria;
 /** @ORM\Entity */
 class Practitioner implements PersonInterface
 {
-    /** @ORM\Column(type="integer") @ORM\id @ORM\GeneratedValue **/
+    /** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
     protected $id;
     /** @ORM\Column(unique=true, nullable=false, type="string") */
     protected $email;
