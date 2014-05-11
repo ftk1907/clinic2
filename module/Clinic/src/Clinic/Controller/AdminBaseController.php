@@ -114,19 +114,82 @@ class AdminBaseController extends AbstractAdminController
         }
         return $this->getMessagePage('error', 'Invalid URL', $url);
     }
-
     /**
      * @inheritdoc
      */
     public function addAction()
     {
-        //TODO: Form
+        $request = $this->getRequest();
+        $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
+        $url = $this->url()->fromRoute('admin', [
+            'controller' => $this->_entityName,
+            'action'     => 'add',
+        ]);
+        if ( $request->isPost() ) {
+            $form->setData($request->getPost());
+            var_dump($form->isValid());
+            if( $form->isValid() ) {
+                try {
+                    $object = $form->getObject();
+                    $this->_entityManager->persist($object);
+                    $this->_entityManager->flush();
+                    $profile = $this->redirect()->toRoute(
+                        'admin', [
+                            'controller' => $this->_entityName,
+                            'action'     => 'profile',
+                            'id'         => $object->getId()
+                        ]
+                    );
+                    return $this->getMessagePage('success', "{$this->_entityName} is successfully registered", $profile);
+                }
+                catch (Exception $e) {
+                    return $this->getMessagePage('error', 'An error occurred, form was not processed', $url);
+                }
+            }
+        }
+        $view = new ViewModel(['form' => $form]);
+        $view->setTemplate($this->_template . '/form');
+        return $view;
     }
     /**
      * @inheritdoc
      */
     public function editAction()
     {
-        //TODO: Form
+        $request = $this->getRequest();
+        $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
+        $id = $this->params('id');
+        $entity = $this->_repository->find($id);
+
+        if(is_null($entity)) {
+            return $this->getMessagePage('error', 'Id not found', $url);
+        }
+
+        $form->bind($entity);
+
+        if ( $request->isPost() ) {
+            $form->setData($request->getPost());
+            if( $form->isValid() ) {
+                try {
+                    $object = $form->getObject();
+                    $this->getEntityManager()->persist($object);
+                    $this->getEntityManager()->flush();
+                    $profile = $this->redirect()->toRoute('admin', [
+                        'controller' => $this->_entityName,
+                        'action'     =>'profile',
+                        'id'         => $object->getId()
+                    ]);
+
+                    return $this->getMessagePage('success', "{$this->_entityName} is successfully registered", $profile);
+                }
+                catch (Exception $e) {
+                    return $this->getMessagePage('error', 'An error occurred, form was not processed', $url);
+                }
+            }
+        }
+
+        $view = new ViewModel(['form' => $form]);
+        $view->setTemplate($this->_template . '/form');
+        return $view;
     }
 }

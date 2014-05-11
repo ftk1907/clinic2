@@ -1,0 +1,26 @@
+<?php
+
+$form = $this->form;
+
+$title = 'Add Patient';
+$this->headTitle($title);
+
+?>
+
+<div class="page-header">
+    <h1>
+        <?php echo $this->escapeHtml($title); ?>
+    </h1>
+</div>
+
+<?php
+$form->setAttribute('action', $this->url('admin', array('controller'=>'patient','action' => 'add')));
+$form->prepare();
+
+echo  $this->form()->openTag($form);
+foreach($form->getElements() as $element){
+    echo "<div class='form-group'>
+                {$this->formRow($element)}
+        </div>";
+}
+echo $this->form()->closeTag();

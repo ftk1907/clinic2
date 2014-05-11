@@ -1,0 +1,6 @@
+[28-Apr-2014 15:08:23 America/Denver] PHP Fatal error:  Uncaught exception 'Doctrine\ORM\Mapping\MappingException' with message 'No identifier/primary key specified for Entity "Clinic\Entity\Practitioner". Every Entity must have an identifier/primary key.' in /home1/confuci2/public_html/booking/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/MappingException.php:52
+Stack trace:
+#0 /home1/confuci2/public_html/booking/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataInfo.php(930): Doctrine\ORM\Mapping\MappingException::identifierRequired('Clinic\\EEttty\\\\....)
+#1 /home1/confuci2/public_html/booking/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataFactory.php(198): Doctrine\ORM\Mapping\ClassMetadataInfo->validateIdentifier()
+#2 /home1/confuci2/public_html/booking/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ClassMetadataFactory.php(178): Doctrine\ORM\Mapping\ClassMetadataFactory->validateRuntimeMetadata(Object(Doctrine\ORM\Mapping\ClassMetadata), NULL)
+#3 /home1/confuci2/public_html/booking/vendor/doctrine/common/lib/Doctrine/Common/Persistence/Mappi in /home1/confuci2/public_html/booking/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/MappingException.php on line 52
