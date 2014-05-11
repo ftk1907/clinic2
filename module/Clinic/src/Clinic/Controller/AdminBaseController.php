@@ -125,6 +125,7 @@ class AdminBaseController extends AbstractAdminController
             'controller' => $this->_entityName,
             'action'     => 'add',
         ]);
+        $form->setAttribute('action', $url);
         if ( $request->isPost() ) {
             $form->setData($request->getPost());
             var_dump($form->isValid());
@@ -157,30 +158,36 @@ class AdminBaseController extends AbstractAdminController
     public function editAction()
     {
         $request = $this->getRequest();
-        $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
         $id = $this->params('id');
         $entity = $this->_repository->find($id);
+        $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
+        $form->setAttribute('action', $url);
+        $form->bind($entity);
+
+
+        $url = $this->url()->fromRoute('admin', [
+            'controller' => $this->_entityName,
+            'action'     => 'edit',
+            'id'         => $id
+        ]);
 
         if(is_null($entity)) {
             return $this->getMessagePage('error', 'Id not found', $url);
         }
 
-        $form->bind($entity);
-
         if ( $request->isPost() ) {
             $form->setData($request->getPost());
             if( $form->isValid() ) {
                 try {
-                    $object = $form->getObject();
-                    $this->getEntityManager()->persist($object);
-                    $this->getEntityManager()->flush();
-                    $profile = $this->redirect()->toRoute('admin', [
+                    $this->_entityManager->persist($entity);
+                    $this->_entityManager->flush();
+                    $profile = $this->url()->fromRoute('admin', [
                         'controller' => $this->_entityName,
                         'action'     =>'profile',
-                        'id'         => $object->getId()
+                        'id'         => $entity->getId()
                     ]);
 
-                    return $this->getMessagePage('success', "{$this->_entityName} is successfully registered", $profile);
+                    return $this->getMessagePage('success', "{$this->_entityName} is successfully updated", $profile);
                 }
                 catch (Exception $e) {
                     return $this->getMessagePage('error', 'An error occurred, form was not processed', $url);

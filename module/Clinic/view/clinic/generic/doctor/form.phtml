@@ -14,7 +14,6 @@ $this->headTitle($title);
 </div>
 
 <?php
-$form->setAttribute('action', $this->url('admin', array('controller'=>'patient','action' => 'add')));
 $form->prepare();
 
 echo  $this->form()->openTag($form);
