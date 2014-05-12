@@ -4,7 +4,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
-/** @ORM\Entity */
+/** @ORM\Entity(repositoryClass="Clinic\Repository\PatientRepository") */
 class Patient implements PersonInterface
 {
     /** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */

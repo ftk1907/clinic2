@@ -27,10 +27,10 @@ return array(
     ],
 
     'entity_controllers' => [
-        'appointment'  => 'Clinic\Entity\Appointment',
-        'patient'      => 'Clinic\Entity\Patient',
-        'practitioner' => 'Clinic\Entity\Practitioner',
-        'doctor'       => 'Clinic\Entity\Doctor',
+        'appointment'  => 'Clinic\Repository\AppointmentRepository',
+        'patient'      => 'Clinic\Repository\PatientRepository',
+        'practitioner' => 'Clinic\Repository\PractitionerRepository',
+        'doctor'       => 'Clinic\Repository\DoctorRepository',
     ],
 
     'view_manager' => array(
