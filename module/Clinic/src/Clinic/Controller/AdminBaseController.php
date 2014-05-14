@@ -117,25 +117,23 @@ class AdminBaseController extends AbstractAdminController
     /**
      * @inheritdoc
      */
-    public function newAction()
+    public function addAction()
     {
         $request = $this->getRequest();
         $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
         $url = $this->url()->fromRoute('admin', [
             'controller' => $this->_entityName,
-            'action'     => 'new',
+            'action'     => 'add',
         ]);
         $form->setAttribute('action', $url);
         if ( $request->isPost() ) {
             $form->setData($request->getPost());
-            var_dump($form->isValid());
             if( $form->isValid() ) {
                 try {
                     $object = $form->getObject();
                     $this->_entityManager->persist($object);
                     $this->_entityManager->flush();
-                    $profile = $this->redirect()->toRoute(
-                        'admin', [
+                    $profile = $this->url()->fromRoute('admin', [
                             'controller' => $this->_entityName,
                             'action'     => 'profile',
                             'id'         => $object->getId()
