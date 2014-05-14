@@ -25,7 +25,7 @@ Form implements InputFilterProviderInterface
 
         $this
             ->setAttribute('method', 'post')
-            ->setHydrator(new Hydrator($entityManager))
+            ->setHydrator($hydrator)
             ->setObject($entity)
         ;
 
