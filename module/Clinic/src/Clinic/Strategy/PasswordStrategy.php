@@ -8,31 +8,14 @@ use Zend\Crypt\Password\Bcrypt;
 */
 class PasswordStrategy extends DefaultStrategy
 {
-
-    private $_bcrypt;
-
-    public function __construct()
-    {
-        $this->_bcrypt = new BCrypt();
-    }
-
     /**
-     * Encrypt password from feild
+     * Encrypt password from field
      *
      * @return Encrypted password
      **/
     function hydrate($value)
     {
-        return $this->_bcrypt->create($value);
-    }
-
-    /**
-     * Just return the value as it is
-     *
-     * @return Encrypted password
-     **/
-    public function extract($value)
-    {
-        return $value;
+        $bcrypt = new BCrypt();
+        return $bcrypt->create($value);
     }
 }
