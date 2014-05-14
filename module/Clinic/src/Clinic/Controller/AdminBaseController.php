@@ -17,6 +17,7 @@ class AdminBaseController extends AbstractAdminController
         $this->_repository    = $this->_entityManager->getRepository($entityPath);
         $this->_template      = "clinic/generic/{$entityName}";
     }
+
     /**
      * @inheritdoc
      */
@@ -27,6 +28,7 @@ class AdminBaseController extends AbstractAdminController
         $view->setTemplate($this->_template . '/all');
         return $view;
     }
+
     /**
      * @inheritdoc
      */
@@ -47,6 +49,7 @@ class AdminBaseController extends AbstractAdminController
         $view->setTemplate($this->_template . '/profile');
         return $view;
     }
+
     /**
      * @inheritdoc
      */
@@ -111,6 +114,7 @@ class AdminBaseController extends AbstractAdminController
         }
         return $this->getMessagePage('error', 'Invalid URL', $url);
     }
+
     /**
      * @inheritdoc
      */
@@ -147,6 +151,7 @@ class AdminBaseController extends AbstractAdminController
         $view->setTemplate($this->_template . '/form');
         return $view;
     }
+
     /**
      * @inheritdoc
      */
