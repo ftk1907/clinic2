@@ -6,6 +6,7 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as Hydrator;
+use Clinic\Strategy\PasswordStrategy;
 
 class PatientRegisterForm extends
 Form implements InputFilterProviderInterface
@@ -19,6 +20,8 @@ Form implements InputFilterProviderInterface
         parent::__construct('Patient Registration');
 
         $this->entityManager = $entityManager;
+        $hydrator = new Hydrator($entityManager);
+        $hydrator->addStrategy('password', new PasswordStrategy());
 
         $this
             ->setAttribute('method', 'post')
