@@ -30,7 +30,7 @@ abstract class AbstractAdminController extends AbstractActionController
      * on error: route to indexAction
      * @return Zend\View\Model\ViewModel
      */
-    public abstract function addAction();
+    public abstract function newAction();
     /**
      * Read: returns a page with dependant child entity pages.
      * i.e: Doctor page with Appointments and Practitioners
