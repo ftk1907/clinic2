@@ -11,7 +11,6 @@ use Clinic\Strategy\PasswordStrategy;
 class PatientRegisterForm extends
 Form implements InputFilterProviderInterface
 {
-
     private $entityManager;
     protected $id;
 

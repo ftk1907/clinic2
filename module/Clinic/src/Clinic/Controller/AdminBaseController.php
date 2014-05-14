@@ -54,17 +54,13 @@ class AdminBaseController extends AbstractAdminController
     {
         $id     = $this->params('id');
         $entity = $this->_repository->find($id);
-
         $url = $this->url()->fromRoute('admin', [
             'controller' => $this->_entityName,
             'action' => 'index',
         ]);
-
-        // id not found
-        if(is_null($entity)) {
+        if(!$entity) {
             return $this->getMessagePage('error', 'Id not found', $url);
         }
-
         try {
             $this->_entityManager->remove($entity);
             $this->_entityManager->flush();
@@ -76,6 +72,7 @@ class AdminBaseController extends AbstractAdminController
             return $this->getMessagePage('error', "[$errorCode]: {$this->_entityName} was not to deleted!", $url);
         }
     }
+
     public function visitAction()
     {
         $url = $this->url()->fromRoute('admin', [
@@ -89,12 +86,12 @@ class AdminBaseController extends AbstractAdminController
                 $entity->setMissed(!$entity->getMissed());
                 $this->_entityManager->persist($entity);
                 $this->_entityManager->flush();
-                ;
                 return $this->getMessagePage('success', 'Action applied', $url);
             }
         }
         return $this->getMessagePage('error', 'Invalid URL', $url);
     }
+
     public function confirmAction()
     {
         $url = $this->url()->fromRoute('admin', [
@@ -157,11 +154,6 @@ class AdminBaseController extends AbstractAdminController
     {
         $request = $this->getRequest();
         $id = $this->params('id');
-        $entity = $this->_repository->find($id);
-        $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
-        $form->setAttribute('action', $url);
-        $form->bind($entity);
-
 
         $url = $this->url()->fromRoute('admin', [
             'controller' => $this->_entityName,
@@ -169,9 +161,19 @@ class AdminBaseController extends AbstractAdminController
             'id'         => $id
         ]);
 
-        if(is_null($entity)) {
-            return $this->getMessagePage('error', 'Id not found', $url);
+        $entity = $this->_repository->find($id);
+
+        if(!$entity) {
+            $indexURL = $this->url()->fromRoute('admin', [
+                'controller' => $this->_entityName,
+                'action'     => 'index'
+            ]);
+            return $this->getMessagePage('error', 'Id not found', $indexURL);
         }
+
+        $form = $this->getServiceLocator()->get($this->_entityName.'RegisterForm');
+        $form->setAttribute('action', $url);
+        $form->bind($entity);
 
         if ( $request->isPost() ) {
             $form->setData($request->getPost());
@@ -184,10 +186,9 @@ class AdminBaseController extends AbstractAdminController
                         'action'     =>'profile',
                         'id'         => $entity->getId()
                     ]);
-
                     return $this->getMessagePage('success', "{$this->_entityName} is successfully updated", $profile);
                 }
-                catch (Exception $e) {
+                catch (\Exception $e) {
                     return $this->getMessagePage('error', 'An error occurred, form was not processed', $url);
                 }
             }
