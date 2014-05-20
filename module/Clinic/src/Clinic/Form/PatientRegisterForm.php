@@ -108,9 +108,10 @@ Form implements InputFilterProviderInterface
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Add',
+                'value' => 'Submit',
                 'id' => 'submitbutton',
                 'required' => 'true',
+                'class'    => 'btn btn-default',
             ),
         ));
     }

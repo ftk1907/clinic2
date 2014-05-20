@@ -1,10 +1,10 @@
 <?php
-namespace Clinic\Controller;
+namespace Clinic\Controller\Factory;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\AbstractPluginManager;
 
-class AbstractEntityControllerFactory implements AbstractFactoryInterface
+class AbstractBaseEntityControllerFactory implements AbstractFactoryInterface
 {
     public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
@@ -23,12 +23,14 @@ class AbstractEntityControllerFactory implements AbstractFactoryInterface
         if (! $this->canCreateServiceWithName($serviceLocator, $name, $requestedName)) {
             throw new \BadMethodCallException('This abstract factory can\'t create service "' . $requestedName . '"');
         }
-
+        // Entity manager dependency
         $parentLocator = $serviceLocator->getServiceLocator();
         $config        = $parentLocator->get('config');
         $entityManager = $parentLocator->get('Doctrine\ORM\EntityManager');
+        // Repository dependency
         $entityPath    = $config['entity_controllers'][$requestedName];
+        $repository    = $entityManager->getRepository($entityPath);
 
-        return new AdminBaseController($entityManager, $entityPath, $requestedName);
+        return new \Clinic\Controller\BaseEntityController($entityManager, $repository, $requestedName);
     }
 }

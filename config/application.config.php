@@ -11,7 +11,8 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'ZendDeveloperTools',
-        'Clinic'
+        'Clinic',
+        'ZfcTwig'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

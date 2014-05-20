@@ -3,7 +3,7 @@ namespace Clinic\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-abstract class AbstractAdminController extends AbstractActionController
+abstract class AbstractEntityController extends AbstractActionController
 {
     /**
      * Shows a message page then redirects to url
@@ -18,11 +18,6 @@ abstract class AbstractAdminController extends AbstractActionController
         $view->setTemplate("clinic/generic/{$page}");
         return $view;
     }
-    /**
-     * returns index page with a list of all the persisted objects of an entity.
-     * @return Zend\View\Model\ViewModel
-     **/
-    // public abstract function indexAction();
     /**
      * Create: returns form page of entity
      * on submit: persists entity

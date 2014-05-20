@@ -1,20 +1,19 @@
 <?php
 namespace Clinic\Controller;
-use Clinic\Controller\AbstractAdminController;
 use Zend\View\Model\ViewModel;
 
-class AdminBaseController extends AbstractAdminController
+class BaseEntityController extends AbstractEntityController
 {
     protected $_entityManager;
     protected $_repository;
     protected $_entityName;
     protected $_template;
 
-    function __construct($entityManager, $entityPath, $entityName)
+    function __construct($entityManager, $repository, $entityName)
     {
         $this->_entityManager = $entityManager;
         $this->_entityName    = $entityName;
-        $this->_repository    = $this->_entityManager->getRepository($entityPath);
+        $this->_repository    = $repository;
         $this->_template      = "clinic/generic/{$entityName}";
     }
 
@@ -37,8 +36,8 @@ class AdminBaseController extends AbstractAdminController
         $id     = $this->params('id');
         $entity = $this->_repository->find($id);
 
-        if(is_null($entity)) {
-           $this->redirect()->toRoute('admin', [
+        if(!$entity) {
+           $url = $this->url()->fromRoute('admin', [
                 'controller' => $this->_entityName,
                 'action'     => 'index',
             ]);
@@ -61,9 +60,11 @@ class AdminBaseController extends AbstractAdminController
             'controller' => $this->_entityName,
             'action' => 'index',
         ]);
+
         if(!$entity) {
             return $this->getMessagePage('error', 'Id not found', $url);
         }
+
         try {
             $this->_entityManager->remove($entity);
             $this->_entityManager->flush();
@@ -74,45 +75,6 @@ class AdminBaseController extends AbstractAdminController
             $errorCode = $e->getPrevious()->getCode();
             return $this->getMessagePage('error', "[$errorCode]: {$this->_entityName} was not to deleted!", $url);
         }
-    }
-
-    public function visitAction()
-    {
-        $url = $this->url()->fromRoute('admin', [
-            'controller' => $this->_entityName,
-            'action' => 'index',
-        ]);
-        if($this->_entityName == 'appointment') {
-            $id     = $this->params('id');
-            $entity = $this->_repository->find($id);
-            if(!is_null($entity)) {
-                $entity->setMissed(!$entity->getMissed());
-                $this->_entityManager->persist($entity);
-                $this->_entityManager->flush();
-                return $this->getMessagePage('success', 'Action applied', $url);
-            }
-        }
-        return $this->getMessagePage('error', 'Invalid URL', $url);
-    }
-
-    public function confirmAction()
-    {
-        $url = $this->url()->fromRoute('admin', [
-            'controller' => $this->_entityName,
-            'action' => 'index',
-        ]);
-        if($this->_entityName == 'appointment') {
-            $id     = $this->params('id');
-            $entity = $this->_repository->find($id);
-            if(!is_null($entity)) {
-                $entity->setConfirmed(!$entity->getConfirmed());
-                $this->_entityManager->persist($entity);
-                $this->_entityManager->flush();
-                ;
-                return $this->getMessagePage('success', 'Action applied', $url);
-            }
-        }
-        return $this->getMessagePage('error', 'Invalid URL', $url);
     }
 
     /**

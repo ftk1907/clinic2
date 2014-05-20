@@ -1,0 +1,28 @@
+<div class="page-header">
+    <h1>
+        {% block pageTitle %}{% endblock %}
+    </h1>
+</div>
+{% block table %}
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-user"></span> {% block title %}{% endblock %}
+        </h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped table-hover">
+        {# Headers #}
+            <thead>
+                <tr>
+                    {% block headers %}
+                    {% endblock %}
+                </tr>
+            </thead>
+            {% block rows %}{% endblock %}
+        </table>
+    </div>
+    <div class="panel-footer" align="center">{% block footer %}{% endblock %}</div>
+</div>
+{% endblock %}

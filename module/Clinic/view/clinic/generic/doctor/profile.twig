@@ -1,0 +1,6 @@
+{% from "clinic/generic/appointment/table" import table %}
+<div class="page-header">
+    <h1><small>Doctor</small> {{ doctor.getName() ~ ' ' ~ doctor.getSurname() }} </h1>
+</div>
+{% from "clinic/generic/tag-templates" import panelDefault as panel %}
+{{ panel( "Appointments", table( doctor.getAppointments() ) ) }}

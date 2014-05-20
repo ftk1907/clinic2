@@ -1,18 +1,18 @@
 <?php
-return array(
+return [
 
     'router' => [
         'routes' => [
             'admin' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => [
-                    'route' => '/admin[/:controller][/:action][/:id]',
+                    'route' => '/admin[/:controller[/:action]][/:id]',
                     'constraints' => [
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'         => '[a-z0-9]*',
                     ],
                     'defaults' => [
-                        // 'controller' => 'appointment',
+                        'controller' => 'appointment',
                         'action'     => 'index',
                     ],
                 ],
@@ -22,7 +22,11 @@ return array(
 
     'controllers' => [
         'abstract_factories' => [
-            'Clinic\Controller\AbstractEntityControllerFactory',
+            'Clinic\Controller\Factory\AbstractBaseEntityControllerFactory',
+        ],
+        'factories' => [
+            'appointment'  => 'Clinic\Controller\Factory\AppointmentControllerFactory',
+            'patient'      => 'Clinic\Controller\Factory\PatientControllerFactory',
         ],
     ],
 
@@ -33,25 +37,24 @@ return array(
         'doctor'       => 'Clinic\Entity\Doctor',
     ],
 
-    'view_manager' => array(
-        'template_path_stack' => array(
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'doctrine' => array(
-        'driver' => array(
-            'application_entities' => array(
+    'doctrine' => [
+        'driver' => [
+            'application_entities' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Clinic/Entity')
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                'paths' => [__DIR__ . '/../src/Clinic/Entity'],
+            ],
+            'orm_default' => [
+                'drivers' => [
                     'Clinic\Entity' =>  'application_entities'
-                ),
-            ),
-        ),
-    ),
-);
-
+                ],
+            ],
+        ],
+    ],
+];

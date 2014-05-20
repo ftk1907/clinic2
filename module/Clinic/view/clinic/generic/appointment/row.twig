@@ -1,0 +1,36 @@
+{% macro row(appointment) %}
+{% from "clinic/generic/tag-templates" import button, icon, label, linkTo %}
+{% set id = appointment.getId() %}
+{% set date = appointment.getDate() %}
+{% set patient        = appointment.getPatient() %}
+{% set practitioner   = appointment.getPractitioner() %}
+{% set doctor         = appointment.getDoctor() %}
+{% set missed         = appointment.getMissed() %}
+{% set confirmed      = appointment.getConfirmed() %}
+{% set confirmUrl     = url('admin', {'controller' : 'appointment', 'action' : 'confirm','id' : id}) %}
+{% set visitUrl       = url('admin', {'controller' : 'appointment', 'action' : 'visit',  'id' : id}) %}
+{% set profileUrl     = url('admin', {'controller' : 'appointment', 'action' : 'profile','id' : id}) %}
+{% set editUrl        = url('admin', {'controller' : 'appointment', 'action' : 'edit',   'id' : id}) %}
+{% set deleteUrl      = url('admin', {'controller' : 'appointment', 'action' : 'delete', 'id' : id}) %}
+<tr>
+    <td>{{ appointment.getId() }}</td>
+    <td>{{ date|date('d M') }}</td>
+    <td>{{ date|date('h:i') }}</td>
+    <td>{{ linkTo('patient', 'profile', patient) }}</td>
+    <td>{{ linkTo('practitioner', 'profile', practitioner) }}</td>
+    <td>{{ linkTo('doctor', 'profile', doctor) }}</td>
+    <td>{{ ( confirmed ? label('success', 'Confirmed') : '' ) }}</td>
+    <td>{{ ( missed    ? '' : label('success', 'Visited') ) }}</td>
+    <td align='right'>
+        {{ button(visitUrl,
+            (missed ? icon('ok', 'Attend') : icon('remove', 'Unattend'))
+        ) }}
+        {{ button(confirmUrl,
+            (confirmed ? icon('remove', 'Unconfirm') : icon('ok', 'Confirm'))
+        ) }}
+        {{ button(profileUrl, icon('comment', 'Feedbacks')) }}
+        {{ button(editUrl, icon('edit', 'Edit')) }}
+        {{ button(deleteUrl, icon('remove', 'Delete')) }}
+    </td>
+</tr>
+{% endmacro %}

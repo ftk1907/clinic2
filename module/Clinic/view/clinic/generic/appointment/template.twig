@@ -1,0 +1,21 @@
+{% from "clinic/generic/appointment/table" import table  %}
+{% macro appointments(person) %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">Today</div>
+        {{ table(person.getAppointments((date("today")), (date("tomorrow")))) }}
+        ?>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">up coming</div>
+            {{ table( person.getAppointments(
+                date("tomorrow"), (date("tomorrow")).add(date("P1W")))
+            ) }}
+        ?>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Archive</div>
+        {{ table( person.getAppointments(
+            (date("today")).sub( date("P5M")), date("today"))
+        ) }}
+    </div>
+{% endmacro %}

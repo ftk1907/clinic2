@@ -15,6 +15,7 @@
         "zendframework/zendservice-recaptcha": "dev-master",
         "doctrine/orm": "2.4",
         "doctrine/doctrine-orm-module": "0.*",
-        "symfony/yaml": "2.*"
+        "symfony/yaml": "2.*",
+        "zf-commons/zfc-twig": "dev-master"
     }
 }

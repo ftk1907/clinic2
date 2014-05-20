@@ -1,0 +1,40 @@
+{% set title = 'Doctors List' %}
+{% do headTitle(title) %}
+{% extends "clinic/generic/table-template" %}
+{% from "clinic/generic/tag-templates" import button, icon, linkTo, href, label %}
+{% block pageTitle %}{{ title }}{% endblock %}
+{% block title %} Doctors {% endblock %}
+{% if doctors is not empty %}
+    {% block headers %}
+        <th>#</th>
+        <th>{{ icon('pencil', 'Joined') }}</th>
+        <th>{{ icon('info-sign', 'Name') }}</th>
+        <th>{{ icon('info-sign', 'Surname') }}</th>
+        <th></th>
+    {% endblock %}
+    {% block rows %}
+        {% for doctor in doctors %}
+            {% set profileUrl = href('doctor', 'profile', doctor) %}
+            {% set editUrl    = href('doctor', 'edit',    doctor) %}
+            {% set deleteUrl  = href('doctor', 'delete',  doctor) %}
+            <tr>
+                <td>{{ doctor.getId() }}</td>
+                <td>{{ doctor.getJoined()|date('d M Y') }}</td>
+                <td>{{ doctor.getName() }}</td>
+                <td>{{ doctor.getSurname() }}</td>
+                <td align="right">
+                    {% set prLabel = label('info', doctor.getPractitioners()|length, 'Practitioners') %}
+                    {{ button(profileUrl ~ '#practitioners', prLabel) }}
+                    {% set apptLabel = label('warning', doctor.getAppointments()|length, 'Appointments') %}
+                    {{ button(profileUrl ~ '#appointments', apptLabel) }}
+                    {{ button(profileUrl, icon('list-alt', 'Profile')) }}
+                    {{ button(doctor.getEmail(), icon('envelope', 'Email')) }}
+                    {{ button(editUrl, icon('edit', 'Edit')) }}
+                    {{ button(deleteUrl, icon('remove', 'Delete')) }}
+                </td>
+            </tr>
+        {% endfor %}
+    {% endblock %}
+{% endif %}
+{% block footer %}{% if doctors is empty %} No doctors {% endif %}{% endblock %}
+

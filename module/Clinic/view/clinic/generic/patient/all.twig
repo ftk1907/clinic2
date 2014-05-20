@@ -1,0 +1,47 @@
+{% set title = 'Patients List' %}
+{% do headTitle(title) %}
+{% extends "clinic/generic/table-template" %}
+{% from "clinic/generic/tag-templates" import button, icon, linkTo, href, label %}
+{% block pageTitle %}{{ title }}{% endblock %}
+{% block title %} Patients {% endblock %}
+{% if patients is not empty %}
+    {% block headers %}
+            <th>#</th>
+            <th>{{ icon('pencil', 'Joined') }}</th>
+            <th>{{ icon('info-sign', 'Name') }}</th>
+            <th>{{ icon('info-sign', 'Surname') }}</th>
+            <th></th>
+            <th></th>
+    {% endblock %}
+    {% block rows %}
+        {% for patient in patients %}
+            {% set verified  = (patient.getVerified()) ?
+                label('success', icon('ok-circle', 'Verified')) : label('default', icon('remove-circle', 'Unverified'))
+            %}
+            {% set profileUrl = href('patient', 'profile', patient) %}
+            {% set editUrl    = href('patient', 'edit',    patient) %}
+            {% set deleteUrl  = href('patient', 'delete',  patient) %}
+            {% set verifyUrl  = href('patient', 'verify',  patient) %}
+            {% set verifyButton  = (patient.getVerified()) ?
+                button(verifyUrl, icon('remove-circle', 'Unverify')) : button(verifyUrl, icon('ok-circle', 'Verify'))
+            %}
+            <tr>
+                <td>{{ patient.getId() }}</td>
+                <td>{{ patient.getJoined()|date('d M Y') }}</td>
+                <td>{{ patient.getName() }}</td>
+                <td>{{ patient.getSurname() }}</td>
+                <td>{{ verified }}</td>
+                <td align="right">
+                    {{ verifyButton }}
+                    {% set apptLabel = label('warning', patient.getAppointments()|length, 'Appointments') %}
+                    {{ button(profileUrl ~ '#appointments', apptLabel) }}
+                    {{ button(profileUrl, icon('list-alt', 'Profile')) }}
+                    {{ button(patient.getEmail(), icon('envelope', 'Email')) }}
+                    {{ button(editUrl, icon('edit', 'Edit')) }}
+                    {{ button(deleteUrl, icon('remove', 'Delete')) }}
+                </td>
+            </tr>
+        {% endfor %}
+    {% endblock %}
+{% endif %}
+{% block footer %}{% if patients is empty %} No patients {% endif %}{% endblock %}

@@ -10,3 +10,4 @@ composer.lock
 vendor/bin
 *.todo
 vendor/ZF2
+vendor/*

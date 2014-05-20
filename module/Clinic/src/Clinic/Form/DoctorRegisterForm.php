@@ -108,8 +108,10 @@ implements InputFilterProviderInterface {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Add',
+                'value' => 'Submit',
                 'id' => 'submitbutton',
+                'class'    => 'btn btn-default',
+
             ),
         ));
 

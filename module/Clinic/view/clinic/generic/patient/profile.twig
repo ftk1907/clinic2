@@ -1,0 +1,10 @@
+<div class="page-header">
+    <h1>
+        <small>patient</small>
+        {{ patient.getName() }} {{ patient.getSurname() }}
+    </h1>
+</div>
+{% from "clinic/generic/appointment/table" import table %}
+{% from "clinic/generic/tag-templates" import panelDefault as panel %}
+
+{{ panel( 'Appointments',  table( patient.getAppointments() ) ) }}

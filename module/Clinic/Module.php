@@ -8,6 +8,7 @@ use Clinic\Entity\Practitioner;
 use Clinic\Form\DoctorRegisterForm;
 use Clinic\Form\PractitionerRegisterForm;
 use Clinic\Form\PatientRegisterForm;
+use Clinic\Form\FeedbackForm;
 
 class Module
 {
@@ -50,6 +51,12 @@ class Module
                     $entityManager = $sm->get('Doctrine\ORM\EntityManager');
                     $patient = new Patient;
                     $form = new PatientRegisterForm($entityManager, $patient);
+                    return $form;
+                },
+
+                'FeedbackForm' => function($sm) {
+                    $entityManager = $sm->get('Doctrine\ORM\EntityManager');
+                    $form = new FeedbackForm($entityManager);
                     return $form;
                 },
 

@@ -1,0 +1,34 @@
+{% from "clinic/generic/tag-templates" import listGroupItem as listItem, linkTo, href %}
+<div class="page-header">
+    <h1>Appointment
+        <small>
+            {{ linkTo('patient', 'profile', appointment.getPatient()) }}
+            {{ appointment.getDate()|date('d M Y H:i') }}
+        </small>
+    </h1>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Complaints and Feedback</h3></div>
+    <ul class="list-group">
+        {{ listItem(
+            'Complaints',
+            appointment.getComplaints()
+            ~ ("<br><a href='"~ href('appointment', 'patient-complaints', appointment) ~ "'>add/update patient's complaints</a>")
+        ) }}
+        {{ listItem(
+            linkTo('doctor', 'profile', appointment.getPatient),
+            appointment.getPatientFeedback()
+            ~ ("<br><a href='"~ href('appointment', 'patient-feedback', appointment) ~ "'>add/update patient's feedback</a>")
+        ) }}
+        {{ listItem(
+            linkTo('doctor', 'profile', appointment.getDoctor),
+            appointment.getDoctorFeedback()
+            ~ ("<br><a href='"~ href('appointment', 'doctor-feedback', appointment) ~ "'>add/update doctor's Feedback</a>")
+        ) }}
+        {{ listItem(
+            linkTo('practitioner', 'profile', appointment.getPractitioner),
+            appointment.getPractitionerFeedback()
+            ~ ("<br><a href='"~ href('appointment', 'practitioner-feedback', appointment) ~ "'>add/update practitioner's feedback</a>")
+        ) }}
+    </ul>
+</div>

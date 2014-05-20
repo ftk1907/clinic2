@@ -1,0 +1,28 @@
+{% macro table(appointments) %}
+    {% if appointments is not empty %}
+        <div class="table-responsive">
+            <table class="table table-condensed table-striped table-hover">
+            {# Headers #}
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><span class="glyphicon glyphicon-calendar"></span> Date</th>
+                        <th><span class="glyphicon glyphicon-time"></span> Time</th>
+                        <th><span class="glyphicon glyphicon-user"></span> Patient</th>
+                        <th><span class="glyphicon glyphicon-user"></span> Practitioner</th>
+                        <th><span class="glyphicon glyphicon-user"></span> Doctor</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                {% from "clinic/generic/appointment/row" import row %}
+                {% for appointment in appointments %}
+                    {{ row(appointment) }}
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <div class="panel-footer" align="center">No appointments</div>
+    {% endif %}
+{% endmacro %}
